@@ -24,7 +24,7 @@ void GlobalWidget::ShowGlobalDebugWindow() {
 	ImGui::Text("Total number of gameobjects %d", GameObject::NumberGameObjects());
 	// Show animation component stuff.
 	if (ImGui::TreeNode("AnimationComponents")) {
-		GameObject::ForEach<AnimationComponent>([](GameObject go, AnimationComponent& anim) {
+		GameObject::ForEach<AnimationComponent>([](GameObject, AnimationComponent& anim) {
 			auto last = anim.Animation->Filename().rfind('/');
 			assert(last != std::string::npos);
 			if (ImGui::TreeNode(anim.Animation->Filename().substr(last + 1).c_str())) {

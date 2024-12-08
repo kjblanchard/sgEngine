@@ -8,6 +8,7 @@ struct GameState {
 		int CurrentBattler;
 	};
 	Battle BattleData;
+	float DeltaTime = 0;
 	int PlayerSpawnLocation;
 	int WindowHeight;
 	int WindowWidth;

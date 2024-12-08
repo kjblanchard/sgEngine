@@ -1,4 +1,5 @@
 #include <Supergoon/pch.hpp>
+#include <Supergoon/World/TiledMap.hpp>
 using json = nlohmann::json;
 using namespace Supergoon;
 

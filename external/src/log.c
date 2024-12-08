@@ -1,9 +1,5 @@
-#include <SDL3/SDL_filesystem.h>
+#include <SupergoonEngine/pch.h>
 #include <SupergoonEngine/log.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
 #define MAX_LOG_SIZE 400
 
@@ -142,6 +138,7 @@ void sgLogCritical(const char *fmt, ...) {
 	va_start(args, fmt);
 	LogSetup(Log_LCritical, fmt, args);
 	fprintf(stderr, "Critical error, exiting!\n");
+
 	exit(1);
 }
 

@@ -51,6 +51,10 @@ set(SKIP_INSTALL_ALL ON CACHE BOOL "We don't want any of these external packages
 set(CMAKE_DEBUG_POSTFIX "" CACHE STRING " Don't use the d for debug packages" FORCE)
 set(CMAKE_DEBUG_TARGET_PROPERTIES "DEBUG_OUTPUT" "" CACHE STRING "Don't use the d for debug packages" FORCE)
 
+target_precompile_headers(${LIBRARY_TARGET_NAME} PRIVATE
+    "$<$<COMPILE_LANGUAGE:C>:${CMAKE_CURRENT_SOURCE_DIR}/include/SupergoonEngine/pch.h>"
+    "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/include/SupergoonEngine/pch.hpp>")
+
 if(SYSTEM_PACKAGES) # If we are using system packages, then we should try to find them.
     find_package(SDL3 CONFIG COMPONENTS SDL3-shared)
     find_library(LIB_VORBIS

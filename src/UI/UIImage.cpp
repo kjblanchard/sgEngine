@@ -1,4 +1,5 @@
 #include <Supergoon/pch.hpp>
+#include <Supergoon/Content/ContentRegistry.hpp>
 #include <Supergoon/UI/UIImage.hpp>
 using namespace Supergoon;
 using json = nlohmann::json;
