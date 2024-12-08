@@ -28,7 +28,9 @@ set(SRC_FILES
     src/clock.c
     src/input/joystick.c
     src/input/keyboard.c
+    src/flecs/flecs.c
 )
+
 
 if(imgui)
     message(STATUS "ImGui is enabled, adding ImGui-related files.")

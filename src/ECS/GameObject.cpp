@@ -1,28 +1,23 @@
 #include <Supergoon/ECS/Gameobject.hpp>
 using namespace Supergoon;
 
-entt::registry GameObject::_registry;
+flecs::world GameObject::_world;
 
-GameObject::GameObject(entt::entity e) : _entity(e) {
-}
+GameObject::GameObject(flecs::entity e) : _entity(e) {}
+
+GameObject::GameObject() : _entity(_world.entity()) {}
 
 void GameObject::FreeGameObject() {
-	_registry.destroy(_entity);
+	_entity.destruct();
 }
 
-GameObject::GameObject() {
-	_entity = _registry.create();
-}
 void GameObject::ClearGameObjects() {
-	_registry.clear();
+	_world.reset();
+	// _world.clear();
 }
 
 int GameObject::NumberGameObjects() {
-	auto count = 0;
-	auto view = _registry.view<entt::entity>();
-	for (auto &&i : view) {
-		(void)i;
-		count++;
-	}
-	return count;
+	// Count all entities in the world.
+	return 1;
+	// return _world.count();
 }

@@ -1,13 +1,10 @@
-#include <SupergoonEngine/imgui/imgui.h>
-
+#include <Supergoon/pch.hpp>
 #include <Supergoon/Events.hpp>
 #include <Supergoon/Graphics/Graphics.hpp>
 #include <Supergoon/Log.hpp>
 #include <Supergoon/Widgets/ConsoleWidget.hpp>
 #include <Supergoon/Widgets/Game.hpp>
 #include <Supergoon/Widgets/Widgets.hpp>
-#include <deque>
-#include <string>
 using namespace Supergoon;
 
 static const int MAX_MESSAGES = 999;

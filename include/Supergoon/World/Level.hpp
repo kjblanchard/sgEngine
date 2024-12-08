@@ -4,6 +4,7 @@
 #include <Supergoon/Physics/Physics.hpp>
 #include <Supergoon/Primitives/Point.hpp>
 #include <Supergoon/World/TiledMap.hpp>
+#include <functional>
 #include <memory>
 #include <tuple>
 namespace Supergoon {

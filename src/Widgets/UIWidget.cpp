@@ -1,5 +1,4 @@
-#include <SupergoonEngine/imgui/imgui.h>
-
+#include <Supergoon/pch.hpp>
 #include <Supergoon/Graphics/Graphics.hpp>
 #include <Supergoon/UI/Panel.hpp>
 #include <Supergoon/UI/UI.hpp>
@@ -113,7 +112,8 @@ void UIWidget::DrawPanel(Panel *panel, std::string panelName) {
 					ImGui::Checkbox(childDebugBoxCheckbox.c_str(), &shouldDrawDebugBox);
 
 					if (shouldDrawDebugBox) {
-						Graphics::Instance()->DrawRect(textUIObject->Bounds, Color(255, 0, 0, 255));
+						// auto color = Color{255,0,0,255};
+						Graphics::Instance()->DrawRect(textUIObject->Bounds, Color{255, 0, 0, 255});
 					}
 					if (ImGui::DragInt(childLettersToDraw.c_str(), &textUIObject->_currentLetters, 1, 0, textUIObject->TextPtr->_text.length())) {
 						value->Dirty = true;

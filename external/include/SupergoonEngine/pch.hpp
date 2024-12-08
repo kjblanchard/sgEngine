@@ -1,6 +1,4 @@
 #pragma once
-
-#include <SupergoonEngine/entt/entt.hpp>
 #include <SupergoonEngine/nlohmann/json.hpp>
 #ifdef imgui
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
