@@ -12,6 +12,7 @@ if(UNIX OR APPLE)
         -Wextra
         -Wpedantic
         -Wdeprecated
+        -Wno-deprecated-redundant-constexpr-static-def
         -Wno-deprecated-literal-operator
         -Wno-macro-redefined
     )
@@ -30,7 +31,6 @@ set(SRC_FILES
     src/input/keyboard.c
     src/flecs/flecs.c
 )
-
 
 if(imgui)
     message(STATUS "ImGui is enabled, adding ImGui-related files.")

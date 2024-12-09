@@ -37,12 +37,12 @@ class GameObject {
 
 template <typename T, typename... Args>
 void GameObject::AddComponent(Args&&... args) {
-	_entity.set<T>(T{std::forward<Args>(args)...});
+	_entity.emplace<T>(T{std::forward<Args>(args)...});
+	assert(_entity.has<T>());
 }
 
 template <typename T>
 T& GameObject::GetComponent() {
-	// return _entity.get_mut<T>()->value;
 	return *_entity.get_mut<T>();
 }
 
@@ -58,12 +58,11 @@ void GameObject::RemoveComponent() {
 
 template <typename T>
 T* GameObject::FindComponent() {
-	auto query = _world.query<T>();
-	query.each([](flecs::entity e, T& component) {
-		// Return the first found component (or nullptr if none exists).
-		return &component;
-	});
-	return nullptr;
+	auto go = GetGameObjectWithComponents<T>();
+	if (!go.has_value() || !go->template HasComponent<T>()) {
+		return nullptr;
+	}
+	return &go->template GetComponent<T>();
 }
 
 template <typename... Components>
