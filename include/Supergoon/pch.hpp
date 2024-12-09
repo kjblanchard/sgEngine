@@ -1,8 +1,8 @@
 #pragma once
 // engine pch
 #include <SupergoonEngine/pch.h>
-
 #include <SupergoonEngine/pch.hpp>
+#include <Supergoon/ECS/Gameobject.hpp>
 // std
 #include <algorithm>
 #include <deque>
