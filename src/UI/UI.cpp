@@ -58,7 +58,7 @@ void UI::Update() {
 
 void UI::Draw() {
 	if (UIInstance) {
-		UIInstance->Draw();
+		UIInstance->DrawInternal();
 	}
 }
 

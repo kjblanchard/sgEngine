@@ -1,21 +1,28 @@
-#include <Supergoon/pch.hpp>
 #include <Supergoon/Graphics/Graphics.hpp>
 #include <Supergoon/UI/Panel.hpp>
 #include <Supergoon/UI/UI.hpp>
 #include <Supergoon/UI/UIHorizontalLayoutGroup.hpp>
 #include <Supergoon/UI/UIImage.hpp>
 #include <Supergoon/UI/UIText.hpp>
+#include <Supergoon/UI/UIVerticalLayoutGroup.hpp>
 #include <Supergoon/Widgets/UIWidget.hpp>
 #include <Supergoon/Widgets/Widgets.hpp>
+#include <Supergoon/pch.hpp>
 using namespace Supergoon;
 static bool shouldDrawDebugBox = false;
-void UIWidget::DrawPanel(Panel *panel, std::string panelName) {
-	if (ImGui::TreeNode((panelName + "- panel").c_str())) {
+
+void UIWidget::DrawUIObjects(UIObject *panel, std::string panelName) {
+	if (ImGui::TreeNode((panelName).c_str())) {
 		auto panelLayerLabel = "Layer ##" + panelName;
 		auto panelOffsetLabel = "Offset X ##" + panelName;
 		auto panelOffsetYLabel = "Offset Y ##" + panelName;
+		ImGui::BeginDisabled();
+		ImGui::Text("Layout Group X: %f, LayoutGroup Y: %f ##%s", panel->LayoutGroupOffset.X, panel->LayoutGroupOffset.Y, panelName.c_str());
+		ImGui::EndDisabled();
 		auto panelTransparencyLabel = "Transparency ##" + panelName;
 		auto visibleLable = "Visible ##" + panelName;
+		auto text = "Type: " + GetWidgetTypeName((BuiltinWidgetTypes)panel->WidgetType);
+		ImGui::Text("%s", text.c_str());
 		if (ImGui::DragInt(panelLayerLabel.c_str(), &panel->_layer, 1, 0, 100)) {
 			panel->Dirty = true;
 		}
@@ -31,124 +38,153 @@ void UIWidget::DrawPanel(Panel *panel, std::string panelName) {
 		if (ImGui::DragInt(panelTransparencyLabel.c_str(), panel->AlphaHandle(), 1, 0, 255, "%d")) {
 			panel->Dirty = true;
 		}
-		for (auto &[key, value] : panel->Children) {
-			if (value->WidgetType == (int)BuiltinWidgetTypes::Panel) {
-				assert((Panel *)value.get());
-				DrawPanel((Panel *)value.get(), key);
-			} else if (value->WidgetType == (int)BuiltinWidgetTypes::Image) {
-				auto imageObject = std::dynamic_pointer_cast<UIImage>(value);
-				std::string childLayerLabel = "Layer##" + key;
-				std::string childX_label = "Offset X##" + key;
-				std::string childY_label = "Offset Y##" + key;
-				std::string childWLabel = "Child W##" + key;
-				std::string childHLabel = "Child H##" + key;
-				std::string transLabel = "Child Transparency##" + key;
-				if (ImGui::TreeNode((key + "- image").c_str())) {
-					if (ImGui::DragInt(childLayerLabel.c_str(), &value->_layer, 1, 0, 100)) {
-						value->Dirty = true;
+		if (panel->WidgetType == (int)BuiltinWidgetTypes::Image) {
+			auto imageObject = dynamic_cast<UIImage *>(panel);
+			std::string childLayerLabel = "Layer##" + panelName;
+			std::string childX_label = "Offset X##" + panelName;
+			std::string childY_label = "Offset Y##" + panelName;
+			std::string childWLabel = "Child W##" + panelName;
+			std::string childHLabel = "Child H##" + panelName;
+			std::string transLabel = "Child Transparency##" + panelName;
+			if (ImGui::TreeNode((panelName + "- image").c_str())) {
+				if (ImGui::DragInt(childLayerLabel.c_str(), &panel->_layer, 1, 0, 100)) {
+					panel->Dirty = true;
+					if (panel->Parent) {
 						panel->Dirty = true;
 					}
-					if (ImGui::DragFloat(childX_label.c_str(), &value->Offset.X, 1.0f)) {
-						value->Dirty = true;
-					}
-					if (ImGui::DragFloat(childY_label.c_str(), &imageObject->Offset.Y, 1.0f)) {
-						value->Dirty = true;
-					}
-					if (ImGui::DragFloat(childWLabel.c_str(), &imageObject->Bounds.W, 1.0f)) {
-						value->Dirty = true;
-					}
-					if (ImGui::DragFloat(childHLabel.c_str(), &imageObject->Bounds.H, 1.0f)) {
-						value->Dirty = true;
-					}
-					if (ImGui::DragInt(transLabel.c_str(), imageObject->AlphaHandle(), 1, 0, 255, "%d", ImGuiSliderFlags_WrapAround)) {
-						value->Dirty = true;
-					}
-					ImGui::TreePop();
 				}
-			} else if (value->WidgetType == (int)BuiltinWidgetTypes::Text) {
-				assert((UIText *)value.get());
-				auto textUIObject = (UIText *)value.get();
-				std::string childLayerLabel = "Layer##" + key;
-				std::string childX_label = "Offset X##" + key;
-				std::string childY_label = "Offset Y##" + key;
-				std::string childW_label = "Width##" + key;
-				std::string childH_label = "Height##" + key;
-				std::string childXBounds = "TextBoundsX##" + key;
-				std::string childYBounds = "TextBoundsY##" + key;
-				std::string childWordWrapLabel = "WordWrap##" + key;
-				std::string childCenterLabel = "Center##" + key;
-				std::string childCenterLabelY = "CenterY##" + key;
-				std::string childLettersToDraw = "Letters To Draw##" + key;
-				std::string childDebugBoxCheckbox = "DebugBox##" + key;
-				if (ImGui::TreeNode((key + "- text").c_str())) {
-					if (ImGui::DragInt(childLayerLabel.c_str(), &value->_layer, 1, 0, 100)) {
-						value->Dirty = true;
-						panel->Dirty = true;
-					}
-					if (ImGui::DragFloat(childX_label.c_str(), &value->Offset.X, 1.0f)) {
-						value->Dirty = true;
-					}
-					if (ImGui::DragFloat(childY_label.c_str(), &value->Offset.Y, 1.0f)) {
-						value->Dirty = true;
-					}
-					if (ImGui::DragFloat(childW_label.c_str(), &value->Bounds.W, 1.0f, 0.0f, FLT_MAX)) {
-						value->Dirty = true;
-					}
-					if (ImGui::DragFloat(childH_label.c_str(), &value->Bounds.H, 1.0f, 0.0f, FLT_MAX)) {
-						value->Dirty = true;
-					}
-					if (ImGui::Checkbox(childWordWrapLabel.c_str(), &textUIObject->WordWrap)) {
-						value->Dirty = true;
-					};
-					ImGui::SameLine();
-					if (ImGui::Checkbox(childCenterLabel.c_str(), &textUIObject->CenterTextX)) {
-						value->Dirty = true;
-					};
-					ImGui::SameLine();
-					if (ImGui::Checkbox(childCenterLabelY.c_str(), &textUIObject->_centerTextY)) {
-						value->Dirty = true;
-					};
-					ImGui::SameLine();
-					ImGui::Checkbox(childDebugBoxCheckbox.c_str(), &shouldDrawDebugBox);
-
-					if (shouldDrawDebugBox) {
-						// auto color = Color{255,0,0,255};
-						Graphics::Instance()->DrawRect(textUIObject->Bounds, Color{255, 0, 0, 255});
-					}
-					if (ImGui::DragInt(childLettersToDraw.c_str(), &textUIObject->_currentLetters, 1, 0, textUIObject->TextPtr->_text.length())) {
-						value->Dirty = true;
-					}
-					ImGui::TreePop();
+				if (ImGui::DragFloat(childX_label.c_str(), &panel->Offset.X, 1.0f)) {
+					panel->Dirty = true;
 				}
-			} else if (value->WidgetType == (int)BuiltinWidgetTypes::HorizontalLayoutGroup) {
-				assert((UIHorizontalLayoutGroup *)value.get());
-				auto horiGroup = (UIHorizontalLayoutGroup *)value.get();
-				std::string childLayerLabel = "Layer##" + key;
-				std::string childXLabel = "Offset X##" + key;
-				std::string childYLabel = "Offset Y##" + key;
-				std::string childSpaceLabel = "Space Y##" + key;
-				if (ImGui::TreeNode((key + "- text").c_str())) {
-					if (ImGui::DragInt(childLayerLabel.c_str(), &value->_layer, 1, 0, 100)) {
-						value->Dirty = true;
-						panel->Dirty = true;
-					}
-					if (ImGui::DragFloat(childXLabel.c_str(), &value->Offset.X, 1.0f)) {
-						value->Dirty = true;
-					}
-					if (ImGui::DragFloat(childYLabel.c_str(), &value->Offset.Y, 1.0f)) {
-						value->Dirty = true;
-					}
-					if (ImGui::DragFloat(childSpaceLabel.c_str(), &horiGroup->YSpaceBetweenElements, 1.0f, -255, 255)) {
-						value->Dirty = true;
-					}
-					ImGui::BeginDisabled();
-					ImGui::Text("Layout Group X: %f, LayoutGroup Y: %f ##%s", value->LayoutGroupOffset.X, value->LayoutGroupOffset.Y, key.c_str());
-					ImGui::EndDisabled();
-					ImGui::TreePop();
+				if (ImGui::DragFloat(childY_label.c_str(), &imageObject->Offset.Y, 1.0f)) {
+					panel->Dirty = true;
 				}
-
-				// ImGui::End();
+				if (ImGui::DragFloat(childWLabel.c_str(), &imageObject->Bounds.W, 1.0f)) {
+					panel->Dirty = true;
+				}
+				if (ImGui::DragFloat(childHLabel.c_str(), &imageObject->Bounds.H, 1.0f)) {
+					panel->Dirty = true;
+				}
+				if (ImGui::DragInt(transLabel.c_str(), imageObject->AlphaHandle(), 1, 0, 255, "%d", ImGuiSliderFlags_WrapAround)) {
+					panel->Dirty = true;
+				}
+				ImGui::TreePop();
 			}
+		} else if (panel->WidgetType == (int)BuiltinWidgetTypes::Text) {
+			assert((UIText *)panel);
+			auto textUIObject = (UIText *)panel;
+			std::string childLayerLabel = "Layer##" + panelName;
+			std::string childX_label = "Offset X##" + panelName;
+			std::string childY_label = "Offset Y##" + panelName;
+			std::string childW_label = "Width##" + panelName;
+			std::string childH_label = "Height##" + panelName;
+			std::string childXBounds = "TextBoundsX##" + panelName;
+			std::string childYBounds = "TextBoundsY##" + panelName;
+			std::string childWordWrapLabel = "WordWrap##" + panelName;
+			std::string childCenterLabel = "Center##" + panelName;
+			std::string childCenterLabelY = "CenterY##" + panelName;
+			std::string childLettersToDraw = "Letters To Draw##" + panelName;
+			std::string childDebugBoxCheckbox = "DebugBox##" + panelName;
+			if (ImGui::TreeNode((panelName + "- text").c_str())) {
+				if (ImGui::DragInt(childLayerLabel.c_str(), &panel->_layer, 1, 0, 100)) {
+					panel->Dirty = true;
+					panel->Dirty = true;
+				}
+				if (ImGui::DragFloat(childX_label.c_str(), &panel->Offset.X, 1.0f)) {
+					panel->Dirty = true;
+				}
+				if (ImGui::DragFloat(childY_label.c_str(), &panel->Offset.Y, 1.0f)) {
+					panel->Dirty = true;
+				}
+				if (ImGui::DragFloat(childW_label.c_str(), &panel->Bounds.W, 1.0f, 0.0f, FLT_MAX)) {
+					panel->Dirty = true;
+				}
+				if (ImGui::DragFloat(childH_label.c_str(), &panel->Bounds.H, 1.0f, 0.0f, FLT_MAX)) {
+					panel->Dirty = true;
+				}
+				if (ImGui::Checkbox(childWordWrapLabel.c_str(), &textUIObject->WordWrap)) {
+					panel->Dirty = true;
+				};
+				ImGui::SameLine();
+				if (ImGui::Checkbox(childCenterLabel.c_str(), &textUIObject->CenterTextX)) {
+					panel->Dirty = true;
+				};
+				ImGui::SameLine();
+				if (ImGui::Checkbox(childCenterLabelY.c_str(), &textUIObject->_centerTextY)) {
+					panel->Dirty = true;
+				};
+				ImGui::SameLine();
+				ImGui::Checkbox(childDebugBoxCheckbox.c_str(), &shouldDrawDebugBox);
+
+				if (shouldDrawDebugBox) {
+					// auto color = Color{255,0,0,255};
+					Graphics::Instance()->DrawRect(textUIObject->Bounds, Color{255, 0, 0, 255});
+				}
+				if (ImGui::DragInt(childLettersToDraw.c_str(), &textUIObject->_currentLetters, 1, 0, textUIObject->TextPtr->_text.length())) {
+					panel->Dirty = true;
+				}
+				ImGui::TreePop();
+			}
+		} else if (panel->WidgetType == (int)BuiltinWidgetTypes::HorizontalLayoutGroup) {
+			assert((UIHorizontalLayoutGroup *)panel);
+			auto horiGroup = (UIHorizontalLayoutGroup *)panel;
+			std::string childLayerLabel = "Layer##" + panelName;
+			std::string childXLabel = "Offset X##" + panelName;
+			std::string childYLabel = "Offset Y##" + panelName;
+			std::string childSpaceLabel = "Space Y##" + panelName;
+			if (ImGui::TreeNode((panelName + "- text").c_str())) {
+				if (ImGui::DragInt(childLayerLabel.c_str(), &panel->_layer, 1, 0, 100)) {
+					panel->Dirty = true;
+					if (panel->Parent) {
+						panel->Dirty = true;
+					}
+				}
+				if (ImGui::DragFloat(childXLabel.c_str(), &panel->Offset.X, 1.0f)) {
+					panel->Dirty = true;
+				}
+				if (ImGui::DragFloat(childYLabel.c_str(), &panel->Offset.Y, 1.0f)) {
+					panel->Dirty = true;
+				}
+				if (ImGui::DragFloat(childSpaceLabel.c_str(), &horiGroup->XSpaceBetweenElements, 1.0f, -255, 255)) {
+					panel->Dirty = true;
+				}
+				ImGui::BeginDisabled();
+				ImGui::Text("Layout Group X: %f, LayoutGroup Y: %f ##%s", panel->LayoutGroupOffset.X, panel->LayoutGroupOffset.Y, panelName.c_str());
+				ImGui::EndDisabled();
+				ImGui::TreePop();
+			}
+
+			// ImGui::End();
+		} else if (panel->WidgetType == (int)BuiltinWidgetTypes::VerticalLayoutGroup) {
+			assert((UIVerticalLayoutGroup *)panel);
+			auto horiGroup = (UIVerticalLayoutGroup *)panel;
+			std::string childLayerLabel = "Layer##" + panelName;
+			std::string childXLabel = "Offset X##" + panelName;
+			std::string childYLabel = "Offset Y##" + panelName;
+			std::string childSpaceLabel = "Space Y##" + panelName;
+			if (ImGui::TreeNode((panelName + "- text").c_str())) {
+				if (ImGui::DragInt(childLayerLabel.c_str(), &panel->_layer, 1, 0, 100)) {
+					panel->Dirty = true;
+					if (panel->Parent) {
+						panel->Dirty = true;
+					}
+				}
+				if (ImGui::DragFloat(childXLabel.c_str(), &panel->Offset.X, 1.0f)) {
+					panel->Dirty = true;
+				}
+				if (ImGui::DragFloat(childYLabel.c_str(), &panel->Offset.Y, 1.0f)) {
+					panel->Dirty = true;
+				}
+				if (ImGui::DragFloat(childSpaceLabel.c_str(), &horiGroup->YSpaceBetweenElements, 1.0f, -255, 255)) {
+					panel->Dirty = true;
+				}
+				ImGui::TreePop();
+			}
+
+			// ImGui::End();
+		}
+		for (auto &[panelName, value] : panel->Children) {
+			DrawUIObjects(value.get(), panelName);
 		}
 		ImGui::TreePop();
 	}
@@ -166,11 +202,9 @@ void UIWidget::ShowUiDebugWindow() {
 		ImGui::End();
 		return;
 	}
-	if (ImGui::DragFloat("Root X", &rootPanel->Offset.X, 1.0f)) {
-		rootPanel->Dirty = true;
-	}
-	if (ImGui::DragFloat("Root Y", &rootPanel->Offset.Y, 1.0f)) {
-		rootPanel->Dirty = true;
+
+	if (ImGui::CollapsingHeader("UI Elements")) {
+		DrawUIObjects(rootPanel, "Root");
 	}
 
 	if (ImGui::CollapsingHeader("UI Animators")) {
@@ -204,9 +238,6 @@ void UIWidget::ShowUiDebugWindow() {
 				}
 			}
 		}
-	}
-	if (ImGui::CollapsingHeader("UI Elements")) {
-		DrawPanel(rootPanel, "Root");
 	}
 	ImGui::End();
 }

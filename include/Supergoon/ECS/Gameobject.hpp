@@ -4,6 +4,7 @@
 #include <optional>
 
 namespace Supergoon {
+
 class GameObject {
    public:
 	GameObject(flecs::entity e);
@@ -20,12 +21,21 @@ class GameObject {
 	void RemoveComponent();
 	template <typename T>
 	static T* FindComponent();
+	/**
+	 * @brief Iterate over all gameobjects with the params passed in with the passed in func.  This version is not cached, and should not be used by systems.
+	 *
+	 * @tparam Components Components that should be included in each iteration
+	 * @tparam Function params, The function (or lambda) to be called on each gameobject with the components
+	 * @param func The actual function
+	 */
 	template <typename... Components, typename Func>
 	static void ForEach(Func func);
 	template <typename... Components>
 	static std::optional<GameObject> GetGameObjectWithComponents();
 	static void ClearGameObjects();
 	static int NumberGameObjects();
+	// TODO SHould only be used by gameobject query.
+	static inline const flecs::world& GetWorld() { return _world; }
 
    private:
 	static flecs::world _world;
@@ -78,6 +88,15 @@ void GameObject::ForEach(Func func) {
 		func(gameObject, components...);
 	});
 }
+
+// template <typename... Components, typename Func>
+// void GameObject::ForEach(Func func, GameObjectQuery query) {
+// 	auto query = GetGameObjectsWithComponents<Components...>();
+// 	query.each([&](flecs::entity entity, Components&... components) {
+// 		GameObject gameObject(entity);
+// 		func(gameObject, components...);
+// 	});
+// }
 
 template <typename... Components>
 std::optional<GameObject> GameObject::GetGameObjectWithComponents() {

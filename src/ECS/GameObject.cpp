@@ -1,4 +1,5 @@
 #include <Supergoon/ECS/Gameobject.hpp>
+#include <Supergoon/ECS/Components/AnimationComponent.hpp>
 using namespace Supergoon;
 
 flecs::world GameObject::_world;
@@ -18,6 +19,7 @@ void GameObject::ClearGameObjects() {
 
 int GameObject::NumberGameObjects() {
 	// Count all entities in the world.
+	// auto query = flecs::query_builder<AnimationComponent>();
 	return 1;
 	// return _world.count();
 }
