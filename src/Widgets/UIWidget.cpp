@@ -7,7 +7,9 @@
 #include <Supergoon/UI/UIVerticalLayoutGroup.hpp>
 #include <Supergoon/Widgets/UIWidget.hpp>
 #include <Supergoon/Widgets/Widgets.hpp>
-#include <Supergoon/pch.hpp>
+#ifdef imgui
+#include <SupergoonEngine/imgui/imgui.h>
+#endif
 using namespace Supergoon;
 static bool shouldDrawDebugBox = false;
 

@@ -4,7 +4,9 @@
 #include <Supergoon/UI/Panel.hpp>
 #include <Supergoon/UI/UI.hpp>
 #include <Supergoon/UI/UIImage.hpp>
-#include <Supergoon/pch.hpp>
+#include <SDL3/SDL.h>
+#include <fstream>
+#include <SupergoonEngine/nlohmann/json.hpp>
 using namespace Supergoon;
 using json = nlohmann::json;
 std::unique_ptr<Panel> UI::UIInstance = nullptr;

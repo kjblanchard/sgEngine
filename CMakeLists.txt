@@ -25,7 +25,8 @@ set(SRC_FILES
     src/World/TiledMap.cpp
     src/World/World.cpp
     src/Physics/Physics.cpp
-    src/ECS/GameObject.cpp
+    src/ECS/GameObject.c
+    src/ECS/Components.cpp
     src/UI/Panel.cpp
     src/UI/UI.cpp
     src/UI/UIImage.cpp
@@ -54,10 +55,10 @@ add_library(${LIBRARY_TARGET_NAME}
     ${SRC_FILES}
 )
 
-target_precompile_headers(${LIBRARY_TARGET_NAME} PRIVATE
+# target_precompile_headers(${LIBRARY_TARGET_NAME} PRIVATE
 
-    # "$<$<COMPILE_LANGUAGE:C>:${CMAKE_CURRENT_SOURCE_DIR}/include/GoonEngine/gnpch.h>"
-    "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/include/Supergoon/pch.hpp>")
+# # "$<$<COMPILE_LANGUAGE:C>:${CMAKE_CURRENT_SOURCE_DIR}/include/GoonEngine/gnpch.h>"
+# "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/include/Supergoon/pch.hpp>")
 target_compile_options(${LIBRARY_TARGET_NAME} PRIVATE ${FULL_COMPILE_OPTIONS})
 target_link_libraries(${LIBRARY_TARGET_NAME}
     PUBLIC
