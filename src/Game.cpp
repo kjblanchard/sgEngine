@@ -1,6 +1,5 @@
 
 #define SDL_MAIN_USE_CALLBACKS
-#include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <SupergoonEngine/Bgm.h>
 #include <SupergoonEngine/Sfx.h>
@@ -8,10 +7,8 @@
 #include <SupergoonEngine/input/joystick.h>
 #include <SupergoonEngine/input/keyboard.h>
 #ifdef imgui
-#include <SupergoonEngine/imgui/imgui.h>
 #include <Supergoon/Widgets/Widgets.hpp>
 #endif
-
 #include <Supergoon/Content/ContentRegistry.hpp>
 #include <Supergoon/Events.hpp>
 #include <Supergoon/Filesystem.hpp>
@@ -20,7 +17,7 @@
 #include <Supergoon/Log.hpp>
 #include <Supergoon/Sound.hpp>
 #include <Supergoon/UI/UI.hpp>
-#include <SupergoonEngine/nlohmann/json.hpp>
+#include <Supergoon/pch.hpp>
 
 using json = nlohmann::json;
 using namespace Supergoon;
@@ -120,11 +117,10 @@ void Game::InternalDraw() {
 void Game::InternalReset() {
 	Reset();
 	UI::Reset();
-	sgClearGameObjects();
+	GameObject::ClearGameObjects();
 	ContentRegistry::DestroyAllContent();
 	if (!_initialized) {
 		Initialize();
-		sgInitializeECSWorld();
 	}
 	UI::Initialize();
 	Start();

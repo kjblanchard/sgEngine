@@ -43,8 +43,8 @@ void Level::AddLevelEventHandlers() {
 		SDL_free(levelName);
 	});
 	Events::RegisterEventHandler(Events::BuiltinEvents.GameObjectAdd, [](int, void *gameObject, void *) {
-		assert((GameObject)gameObject);
-		_currentLevel->AddGameObjectToLevel((GameObject)gameObject);
+		assert((GameObject *)gameObject);
+		_currentLevel->AddGameObjectToLevel((GameObject *)gameObject);
 	});
 }
 
@@ -69,54 +69,48 @@ Level::Level(const char *filename)
 	CreateBackgroundImage();
 	LoadAllGameObjects();
 	LoadSolidObjects();
-	// auto gamestate = GameObject::FindComponent<GameState>();
-	// if (!gamestate) {
-	// 	// TODO when do we clean this up?  Currently comes up as a leak.
-	// 	auto gsGo = new GameObject();
-	// 	auto gamestate = GameState();
-	// 	auto keepalive = KeepAliveComponent();
-	// 	// gamestate.CurrentLevel = this;
-	// 	gamestate.PlayerSpawnLocation = 0;
-	// 	gamestate.WindowHeight = Graphics::Instance()->LogicalHeight();
-	// 	gamestate.WindowWidth = Graphics::Instance()->LogicalWidth();
-	// 	gamestate.CameraFollowTarget = true;
-	// 	gamestate.Loading = false;
-	// 	// Battle
-	// 	gamestate.InBattle = false;
-	// 	gamestate.BattleData.BattleID = 0;
-	// 	// ecs_set_ptr(GameObject::_world, gsGo->_entity, GameState, &gamestate);
-	// 	sgComponentDeclare(GameState);
-	// 	sgComponentDeclare(KeepAliveComponent);
-	// 	sgGameObjectAddComponent(gsGo, GameState, &gamestate);
-	// 	sgGameObjectAddComponent(gsGo, KeepAliveComponent, &keepalive);
-	// 	// gsGo->AddComponent<GameState>(gamestate);
-	// 	// gsGo->AddComponent<KeepAliveComponent>(keepalive);
-	// 	AddGameObjectToLevel(gsGo);
-	// } else {
-	// 	// gamestate->CurrentLevel = this;
-	// }
-	// auto camGo = new GameObject();
-	// auto camera = CameraComponent();
-	// camera.Bounds.X = GetSize().X;
-	// camera.Bounds.Y = GetSize().Y;
-	// camera.Box.X = 0;
-	// camera.Box.Y = 0;
-	// sgComponentDeclare(CameraComponent);
-	// sgGameObjectAddComponent(camGo, CameraComponent, &camera);
-	// AddGameObjectToLevel(camGo);
+	auto gamestate = GameObject::FindComponent<GameState>();
+	if (!gamestate) {
+		// TODO when do we clean this up?  Currently comes up as a leak.
+		auto gsGo = new GameObject();
+		auto gamestate = GameState();
+		auto keepalive = KeepAliveComponent();
+		// gamestate.CurrentLevel = this;
+		gamestate.PlayerSpawnLocation = 0;
+		gamestate.WindowHeight = Graphics::Instance()->LogicalHeight();
+		gamestate.WindowWidth = Graphics::Instance()->LogicalWidth();
+		gamestate.CameraFollowTarget = true;
+		gamestate.Loading = false;
+		// Battle
+		gamestate.InBattle = false;
+		gamestate.BattleData.BattleID = 0;
+		gsGo->AddComponent<GameState>(gamestate);
+		gsGo->AddComponent<KeepAliveComponent>(keepalive);
+		AddGameObjectToLevel(gsGo);
+	} else {
+		// gamestate->CurrentLevel = this;
+	}
+	auto camGo = new GameObject();
+	auto camera = CameraComponent();
+	camera.Bounds.X = GetSize().X;
+	camera.Bounds.Y = GetSize().Y;
+	camera.Box.X = 0;
+	camera.Box.Y = 0;
+	camGo->AddComponent<CameraComponent>(camera);
+	AddGameObjectToLevel(camGo);
 }
 
 Level::~Level() {
 	// TODO should we actually clear the background testure when level is destroyed here too?
 	// TODO when should we clear keepalive components?
-	// for (auto &&go : _gameObjects) {
-	// 	if (go->HasComponent<KeepAliveComponent>()) {
-	// 		continue;
-	// 	}
-	// 	go->FreeGameObject();
-	// 	delete (go);
-	// }
-	// _gameObjects.clear();
+	for (auto &&go : _gameObjects) {
+		if (go->HasComponent<KeepAliveComponent>()) {
+			continue;
+		}
+		go->FreeGameObject();
+		delete (go);
+	}
+	_gameObjects.clear();
 }
 
 std::string Level::GetBasePathForTiled() {
@@ -173,15 +167,15 @@ void Level::LoadNewLevel(std::string level) {
 		LoadFunc();
 	}
 	auto bgm = _currentLevel->GetBgm();
-	// auto goboi = GameObject::GetGameObjectWithComponents<GameState>();
-	// auto comp = sgGameObjectGetComponent(goboi, GameState);
-	// comp->Loading = false;
-	// if (!bgm.empty()) {
-	// 	Events::PushEvent(Events::BuiltinEvents.PlayBgmEvent, 0, (void *)strdup(bgm.c_str()));
-	// }
-	// if (comp->InBattle) {
-	// 	UI::FadeIn();
-	// }
+	auto goboi = GameObject::GetGameObjectWithComponents<GameState>();
+	auto &comp = goboi->GetComponent<GameState>();
+	comp.Loading = false;
+	if (!bgm.empty()) {
+		Events::PushEvent(Events::BuiltinEvents.PlayBgmEvent, 0, (void *)strdup(bgm.c_str()));
+	}
+	if (comp.InBattle) {
+		UI::FadeIn();
+	}
 }
 
 void Level::LoadAllGameObjects() {
@@ -194,7 +188,7 @@ void Level::LoadAllGameObjects() {
 		if (!go) {
 			sgLogWarn("Could not create object of type %s", type.c_str());
 		}
-		_gameObjects.push_back(*go);
+		_gameObjects.push_back(go);
 	}
 	UI::SetFadeOutEndFunc(nullptr);
 }
@@ -248,30 +242,26 @@ void Level::CreateBackgroundImage() {
 		}
 	}
 }
-GameObject Level::NewSolidObject(TiledMap::TiledObject &t) {
-	auto go = sgGameObjectCreate();
+GameObject *Level::NewSolidObject(TiledMap::TiledObject &t) {
+	auto go = new GameObject();
 	auto l = LocationComponent();
 	auto s = SolidComponent();
 	s.Size = Point{t.Width, t.Height};
 	l.Location.X = t.X;
 	l.Location.Y = t.Y;
-	sgComponentDeclare(SolidComponent);
-	sgComponentDeclare(LocationComponent);
-	sgGameObjectAddComponent(go, SolidComponent, &s);
-	sgGameObjectAddComponent(go, LocationComponent, &l);
+	go->AddComponent<SolidComponent>(s);
+	go->AddComponent<LocationComponent>(l);
 	return go;
 }
-GameObject Level::NewSolidObject(Rectangle r) {
-	auto go = sgGameObjectCreate();
+GameObject *Level::NewSolidObject(Rectangle r) {
+	auto go = new GameObject();
 	auto l = LocationComponent();
 	auto s = SolidComponent();
 	s.Size = Point{r.W, r.H};
 	l.Location.X = r.X;
 	l.Location.Y = r.Y;
-	sgComponentDeclare(SolidComponent);
-	sgComponentDeclare(LocationComponent);
-	sgGameObjectAddComponent(go, SolidComponent, &s);
-	sgGameObjectAddComponent(go, LocationComponent, &l);
+	go->AddComponent<SolidComponent>(s);
+	go->AddComponent<LocationComponent>(l);
 	return go;
 }
 

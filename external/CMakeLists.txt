@@ -12,15 +12,11 @@ if(UNIX OR APPLE)
         -Wextra
         -Wpedantic
         -Wdeprecated
-        -Wno-gnu-alignof-expression
         -Wno-deprecated-redundant-constexpr-static-def
         -Wno-deprecated-literal-operator
         -Wno-macro-redefined
     )
 endif(UNIX OR APPLE)
-
-# add for compound literal.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fms-extensions")
 
 message(STATUS "Starting ${LIBRARY_TARGET_NAME} library initialization")
 cmake_minimum_required(VERSION 3.22)

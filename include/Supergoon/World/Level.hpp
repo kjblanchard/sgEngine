@@ -1,8 +1,6 @@
 #pragma once
-
-#include <Supergoon/ECS/GameObject.h>
-
 #include <Supergoon/Content/Image.hpp>
+#include <Supergoon/ECS/Gameobject.hpp>
 #include <Supergoon/Physics/Physics.hpp>
 #include <Supergoon/Primitives/Point.hpp>
 #include <Supergoon/World/TiledMap.hpp>
@@ -39,7 +37,7 @@ class Level {
 	static T *GetCurrentLevelProperty(std::string key);
 
    private:
-	inline void AddGameObjectToLevel(GameObject g) { _gameObjects.push_back(g); }
+	inline void AddGameObjectToLevel(GameObject *g) { _gameObjects.push_back(g); }
 	// Loads a new level with a fade, for screen transitions.
 	static void LoadNewLevelFade(std::string level);
 	static void LoadNewLevel(std::string level);
@@ -51,15 +49,15 @@ class Level {
 	void LoadSolidObjects();
 	Image *GetSurfaceForGid(int gid, const TiledMap::Tileset *tileset);
 	// void StartBgm();
-	GameObject NewSolidObject(TiledMap::TiledObject &);
-	GameObject NewSolidObject(Rectangle r);
+	GameObject *NewSolidObject(TiledMap::TiledObject &);
+	GameObject *NewSolidObject(Rectangle r);
 
    private:
 	std::string GetBasePathForTiled();
 	std::string _name;
 	std::vector<std::shared_ptr<Image>> _backgroundTilesetImages;
 	std::shared_ptr<Image> _background;
-	std::vector<GameObject> _gameObjects;
+	std::vector<GameObject *> _gameObjects;
 	std::unique_ptr<TiledMap> _mapData;
 	static std::unique_ptr<Level> _currentLevel;
 	friend class LevelWidget;

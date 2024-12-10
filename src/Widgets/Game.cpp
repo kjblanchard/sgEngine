@@ -3,17 +3,6 @@
 #include <Supergoon/Graphics/Graphics.hpp>
 #include <Supergoon/Widgets/Game.hpp>
 #include <Supergoon/Widgets/Widgets.hpp>
-#include <Supergoon/ECS/GameObject.h>
-#include <Supergoon/ECS/Components/AnimationComponent.hpp>
-#include <Supergoon/ECS/Components/CameraComponent.hpp>
-#include <Supergoon/ECS/Components/GameStateComponent.hpp>
-#include <Supergoon/ECS/Components/ImageComponent.hpp>
-#include <Supergoon/ECS/Components/KeepAliveComponent.hpp>
-#include <Supergoon/ECS/Components/LocationComponent.hpp>
-#include <Supergoon/ECS/Components/SolidComponent.hpp>
-#ifdef imgui
-#include <SupergoonEngine/imgui/imgui.h>
-#endif
 namespace Supergoon {
 
 bool GameWidget::_isFocusedLastFrame = true;

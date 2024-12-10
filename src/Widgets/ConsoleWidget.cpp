@@ -5,9 +5,6 @@
 #include <Supergoon/Widgets/ConsoleWidget.hpp>
 #include <Supergoon/Widgets/Game.hpp>
 #include <Supergoon/Widgets/Widgets.hpp>
-#ifdef imgui
-#include <SupergoonEngine/imgui/imgui.h>
-#endif
 using namespace Supergoon;
 
 static const int MAX_MESSAGES = 999;

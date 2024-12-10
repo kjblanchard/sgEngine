@@ -1,5 +1,4 @@
-#include <SupergoonEngine/nlohmann/json.hpp>
-#include <SDL3/SDL.h>
+#include <Supergoon/pch.hpp>
 #include <Supergoon/Content/ContentRegistry.hpp>
 #include <Supergoon/UI/UIImage.hpp>
 using namespace Supergoon;

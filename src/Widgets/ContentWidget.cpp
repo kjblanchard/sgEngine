@@ -4,9 +4,6 @@
 #include <Supergoon/Widgets/Widgets.hpp>
 #include <Supergoon/pch.hpp>
 #include <vector>
-#ifdef imgui
-#include <SupergoonEngine/imgui/imgui.h>
-#endif
 namespace Supergoon {
 
 void ContentWidget::ShowContentDebugWindow() {

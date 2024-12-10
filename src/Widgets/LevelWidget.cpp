@@ -1,13 +1,9 @@
+#include <Supergoon/pch.hpp>
 #include <Supergoon/ECS/Components/GameStateComponent.hpp>
 #include <Supergoon/Events.hpp>
 #include <Supergoon/Widgets/LevelWidget.hpp>
 #include <Supergoon/Widgets/Widgets.hpp>
 #include <Supergoon/World/Level.hpp>
-#include <SDL3/SDL.h>
-#include <regex>
-#ifdef imgui
-#include <SupergoonEngine/imgui/imgui.h>
-#endif
 using namespace Supergoon;
 std::vector<std::string> levelNames;
 std::vector<const char*> levelNamesC;
@@ -39,14 +35,14 @@ void LevelWidget::ShowLevelWidget() {
 		return;
 	}
 	if (Level::_currentLevel) {
-		// auto gamestate = GameObject::FindComponent<GameState>();
-		// if (gamestate) {
-		// 	ImGui::Checkbox("Camera Following Target", &gamestate->CameraFollowTarget);
-		// }
-		// if (ImGui::DragInt("CameraX", &Level::_currentLevel->cameraX)) {
-		// }
-		// if (ImGui::DragInt("CameraY", &Level::_currentLevel->cameraY)) {
-		// }
+		auto gamestate = GameObject::FindComponent<GameState>();
+		if (gamestate) {
+			ImGui::Checkbox("Camera Following Target", &gamestate->CameraFollowTarget);
+		}
+		if (ImGui::DragInt("CameraX", &Level::_currentLevel->cameraX)) {
+		}
+		if (ImGui::DragInt("CameraY", &Level::_currentLevel->cameraY)) {
+		}
 	}
 
 	static int item_current = 0;
@@ -57,9 +53,9 @@ void LevelWidget::ShowLevelWidget() {
 		std::vector<std::string> result(std::sregex_token_iterator(levelFull.begin(), levelFull.end(), dotRegex, -1), std::sregex_token_iterator());
 		levelNameStrip = result[0];
 		// TODO is this a leak since I strdup?
-		// auto gamestate = GameObject::FindComponent<GameState>();
-		// gamestate->PlayerSpawnLocation = 0;
-		// Events::PushEvent(Events::BuiltinEvents.LevelChangeEvent, 0, (void*)strdup(levelNameStrip.c_str()));
+		auto gamestate = GameObject::FindComponent<GameState>();
+		gamestate->PlayerSpawnLocation = 0;
+		Events::PushEvent(Events::BuiltinEvents.LevelChangeEvent, 0, (void*)strdup(levelNameStrip.c_str()));
 	}
 	ImGui::End();
 }

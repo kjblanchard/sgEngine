@@ -1,13 +1,10 @@
+#include <Supergoon/pch.hpp>
+
 #include <Supergoon/Content/ContentRegistry.hpp>
 #include <Supergoon/Content/Sfx.hpp>
 #include <Supergoon/Game.hpp>
 #include <Supergoon/Sound.hpp>
 #include <Supergoon/Widgets/SoundWidget.hpp>
-#include <regex>
-#include <SDL3/SDL.h>
-#ifdef imgui
-#include <SupergoonEngine/imgui/imgui.h>
-#endif
 
 namespace Supergoon {
 
