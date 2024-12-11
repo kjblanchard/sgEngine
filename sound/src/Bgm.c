@@ -6,7 +6,7 @@
 #include <vorbis/vorbisfile.h>
 
 #ifdef _WIN32
-#define strncasecmp(x,y,z) _strnicmp(x,y,z)
+#define strncasecmp(x, y, z) _strnicmp(x, y, z)
 #endif
 
 #define BGM_NUM_BUFFERS 4		  // Amount of "Buffers" we should have buffered in the SDL stream
@@ -143,7 +143,9 @@ void sgBgmPlay(sgBgm *bgm) {
 		return;
 	}
 	bgm->IsPlaying = true;
-	SDL_ResumeAudioStreamDevice(bgm->Stream);
+	if (!SDL_ResumeAudioStreamDevice(bgm->Stream)) {
+		sgLogWarn("Could not resume audio stream %s", SDL_GetError());
+	}
 }
 
 void sgBgmPause(sgBgm *bgm) {

@@ -26,8 +26,12 @@ void Sound::InitializeSound() {
 	Events::RegisterEventHandler(Events::BuiltinEvents.PlayBgmEvent, [this](int slot, void* name, void*) {
 		auto nameStr = std::string((const char*)name);
 		// TODO this doesn't pass in any thing correctly, probably pass in an actual object
-		LoadBgm(nameStr, 1, -1, slot);
-		PlayBgm(slot);
+		if (!LoadBgm(nameStr, 1, -1, slot)) {
+			SetPlayingBgmVolume(_bgmOriginalVolume[slot], slot);
+			sgBgmPlay(_bgms[slot]);
+		} else {
+			PlayBgm(slot);
+		}
 		SDL_free(name);
 	});
 	Events::RegisterEventHandler(Events::BuiltinEvents.StopBgmEvent, [this](int slot, void* shouldFade, void*) {
@@ -116,6 +120,13 @@ void Sound::StopBgmFadeout(int slot, float fadeTime) {
 	_tweens[slot]->UpdateFunc = [this]() {
 		UpdatePlayingBgmVolume();
 	};
+	_tweens[slot]->EndFunc = [this, slot]() {
+		assert(_bgms[slot] && "No BGM in slot");
+		PauseBgm(slot);
+		SDL_free(_tweens[slot]);
+		_tweens[slot] = nullptr;
+		_fadingOut = false;
+	};
 	_fadingOut = true;
 }
 
@@ -134,13 +145,6 @@ void Sound::Update() {
 		if (!tween) return;
 		if (!tween->Complete()) {
 			tween->Update();
-			// UpdatePlayingBgmVolume();
-			// SetPlayingBgmVolume(_playingBgmVolume);
-		} else {
-			StopBgm();
-			SDL_free(_tweens[i]);
-			tween = nullptr;
-			_fadingOut = false;
 		}
 	}
 }
