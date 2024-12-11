@@ -2,9 +2,9 @@
 #include <Supergoon/pch.hpp>
 
 using namespace Supergoon;
-
 UIHorizontalLayoutGroup::UIHorizontalLayoutGroup(UIObject* parent, std::string name) : UIObject(parent, name) {
 	WidgetType = (int)BuiltinWidgetTypes::HorizontalLayoutGroup;
+	ParentDirtyWithChildren = true;
 }
 void UIHorizontalLayoutGroup::OnDirty() {
 	int i = 0;

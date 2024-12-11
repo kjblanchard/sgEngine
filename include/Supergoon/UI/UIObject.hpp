@@ -27,6 +27,7 @@ class UIObject {
 	UIObject(UIObject* parent, std::string name = "", bool enabled = true, bool visible = true);
 	virtual ~UIObject() = default;
 
+	void SetDirty(bool parentSet = false);
 	void AddChild(UIObject* child);
 	void AddChild(std::shared_ptr<UIObject> child);
 	void RemoveChild(const std::string& name);
@@ -45,8 +46,9 @@ class UIObject {
 	void DrawInternal();
 
 	std::string Name;
+	// When one of the children of this object are dirty, should we dirty too?  This is for HLG, VLG mainly.
+	bool ParentDirtyWithChildren = false;
 	bool Enabled = true;
-	bool Dirty = true;
 	UIObject* Parent = nullptr;
 	RectangleF Bounds = {0, 0, 0, 0};
 	std::vector<std::shared_ptr<UIObject>> Children;
@@ -56,6 +58,7 @@ class UIObject {
 	std::vector<std::shared_ptr<UIObjectAnimatorBase>> Animators;
 
    protected:
+	bool Dirty = true;
 	int _alpha = 255;
 	bool _visible = true;
 	int _layer = 0;

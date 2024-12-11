@@ -50,10 +50,12 @@ UIObject* UIObject::GetChildByName(const string& name) {
 }
 
 void UIObject::AddChild(UIObject* child) {
+	SetDirty(true);
 	Children.push_back(shared_ptr<UIObject>(child));
 }
 
 void UIObject::AddChild(shared_ptr<UIObject> child) {
+	SetDirty(true);
 	Children.push_back(child);
 }
 
@@ -110,7 +112,14 @@ void UIObject::DirtyInternal() {
 	}
 	OnDirty();
 }
-
+void UIObject::SetDirty(bool parentSet) {
+	Dirty = true;
+	// Dirty the parent, in the case of layout groups
+	if (ParentDirtyWithChildren && Parent && !parentSet) {
+		parentSet = true;
+		Parent->SetDirty(parentSet);
+	}
+}
 void UIObject::UpdateInternal() {
 	if (!Enabled) {
 		return;

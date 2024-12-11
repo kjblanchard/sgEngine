@@ -5,6 +5,7 @@ using namespace Supergoon;
 
 UIVerticalLayoutGroup::UIVerticalLayoutGroup(UIObject* parent, std::string name) : UIObject(parent, name) {
 	WidgetType = (int)BuiltinWidgetTypes::VerticalLayoutGroup;
+	ParentDirtyWithChildren = true;
 }
 void UIVerticalLayoutGroup::OnDirty() {
 	int i = 0;

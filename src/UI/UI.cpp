@@ -36,6 +36,7 @@ Panel* UI::Initialize() {
 	fadeImage->Bounds = RectangleF{0, 0, (float)graphics->LogicalWidth(), (float)graphics->LogicalHeight()};
 	fadeImage->Offset.X = 0;
 	fadeImage->Offset.Y = 0;
+	fadeImage->SetLayer(100);
 	auto fadeInAnimator = std::make_shared<UIObjectAnimatorBase>("fadein");
 	auto fadeOutAnimator = std::make_shared<UIObjectAnimatorBase>("fadeout");
 	auto fadeOutTween = new Tween(0, 255, 0.3, fadeImage->AlphaHandle(), Supergoon::Easings::Linear);
@@ -46,7 +47,6 @@ Panel* UI::Initialize() {
 	fadeImage->Animators.push_back(fadeOutAnimator);
 	_fadeOutAnimator = fadeOutAnimator.get();
 	_fadeInAnimator = fadeInAnimator.get();
-	// rootPanel->Children[name] = fadePanel;
 	return UIInstance.get();
 }
 
