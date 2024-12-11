@@ -6,9 +6,8 @@ using namespace Supergoon;
 static const int _centerYOffsetCorrection = 2;
 
 UIText::UIText(UIObject* parent, std::string text, std::string uiName, unsigned int size) : UIObject(parent), DisplayText(text) {
-	// auto uiname = uiName.empty() ? uiName : text;
 	auto uiname = !uiName.empty() ? uiName : text;
-	parent->Children[uiName] = std::shared_ptr<UIObject>(this);
+	Name = uiname;
 	WidgetType = (int)BuiltinWidgetTypes::Text;
 	TextPtr = ContentRegistry::CreateContent<Text, std::string, int>(text, "commodore", size);
 	// Start the bounds to be the size of textptr, for ease of use.

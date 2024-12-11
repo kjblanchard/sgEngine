@@ -16,7 +16,7 @@ void UI::RegisterUIEvents() {
 		auto ui = UI::UIInstance.get();
 		auto nameString = (const char*)name;
 		assert(nameString);
-		ui->Children.erase(nameString);
+		ui->RemoveChild(nameString);
 	});
 }
 
@@ -70,7 +70,6 @@ void UI::LoadUIFromFile(std::string filename, Panel* parentPanel) {
 		if (jsonChild["type"] == "Image") {
 			auto name = jsonChild["name"].get<std::string>();
 			auto child = std::make_shared<UIImage>(parentPanel, jsonChild);
-			parentPanel->Children[name] = child;
 		}
 	}
 }

@@ -3,13 +3,12 @@
 
 using namespace Supergoon;
 
-UIHorizontalLayoutGroup::UIHorizontalLayoutGroup(UIObject* parent, std::string name) : UIObject(parent) {
+UIHorizontalLayoutGroup::UIHorizontalLayoutGroup(UIObject* parent, std::string name) : UIObject(parent, name) {
 	WidgetType = (int)BuiltinWidgetTypes::HorizontalLayoutGroup;
-	parent->Children[name] = std::shared_ptr<UIObject>(this);
 }
 void UIHorizontalLayoutGroup::OnDirty() {
 	int i = 0;
-	for (auto& [name, uiObject] : Children) {
+	for (auto& uiObject : Children) {
 		uiObject->LayoutGroupOffset.X = i * XSpaceBetweenElements;
 		uiObject->DirtyInternal();
 		++i;

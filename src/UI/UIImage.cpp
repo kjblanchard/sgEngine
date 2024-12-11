@@ -11,8 +11,7 @@ void UIImage::OnDirty() {
 	Bounds.Y = Offset.Y + parentBoundsY;
 	ImagePtr->SetAlpha(EffectiveAlpha());
 }
-UIImage::UIImage(UIObject* parent, std::string id) : UIObject(parent) {
-	parent->Children[id] = std::shared_ptr<UIObject>(this);
+UIImage::UIImage(UIObject* parent, std::string id) : UIObject(parent, id) {
 	WidgetType = (int)BuiltinWidgetTypes::Image;
 }
 

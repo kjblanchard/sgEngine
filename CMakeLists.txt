@@ -28,6 +28,7 @@ set(SRC_FILES
     src/ECS/GameObject.cpp
     src/UI/Panel.cpp
     src/UI/UI.cpp
+    src/UI/UIObject.cpp
     src/UI/UIImage.cpp
     src/UI/UIText.cpp
     src/UI/UIObjectAnimator.cpp
