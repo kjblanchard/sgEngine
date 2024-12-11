@@ -37,6 +37,7 @@ void UIObject::RemoveChild(const std::string& name) {
 									  return obj->Name == name;
 								  }),
 				   Children.end());
+	Dirty = true;
 }
 UIObject* UIObject::GetChildByName(const string& name) {
 	if (Children.empty()) {

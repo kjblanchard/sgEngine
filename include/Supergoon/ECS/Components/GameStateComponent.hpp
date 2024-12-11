@@ -6,6 +6,7 @@ struct GameState {
 	struct Battle {
 		int BattleID;
 		int CurrentBattler;
+		bool BattleVictory = false;
 	};
 	Battle BattleData;
 	float DeltaTime = 0;

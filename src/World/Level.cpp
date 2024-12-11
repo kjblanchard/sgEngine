@@ -156,8 +156,9 @@ void Level::LoadNewLevelFade(std::string level) {
 		Events::PushEvent(Events::BuiltinEvents.LevelChangeEvent, false, (void *)strdup(level.c_str()));
 		UI::FadeIn();
 	});
-	static bool fadebool = true;
-	Events::PushEvent(Events::BuiltinEvents.StopBgmEvent, false, (void *)&fadebool);
+	// TODO, we should stop the bgm here, so that it can fade out.  Removed this as when the BGM stayed the same, I couldn't easily get it to sound good in the transition.
+	// static bool fadebool = true;
+	// Events::PushEvent(Events::BuiltinEvents.StopBgmEvent, false, (void *)&fadebool);
 	UI::FadeOut();
 }
 
