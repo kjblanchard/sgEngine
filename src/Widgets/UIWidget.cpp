@@ -18,6 +18,7 @@ void UIWidget::DrawUIObjects(UIObject *uiObject, std::string panelName) {
     auto panelOffsetYLabel = "Offset Y ##" + panelName;
     ImGui::BeginDisabled();
     ImGui::Text("Layout Group X: %f, LayoutGroup Y: %f ##%s", uiObject->LayoutGroupOffset.X, uiObject->LayoutGroupOffset.Y, panelName.c_str());
+    ImGui::Text("Override  X: %f, Override Y: %f ##%s", uiObject->_drawOverride.X, uiObject->_drawOverride.Y, panelName.c_str());
     ImGui::EndDisabled();
     auto panelTransparencyLabel = "Transparency ##" + panelName;
     auto visibleLable = "Visible ##" + panelName;

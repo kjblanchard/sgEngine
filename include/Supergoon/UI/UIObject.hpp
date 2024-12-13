@@ -35,6 +35,8 @@ public:
   void SetAlpha(int alpha);
   unsigned int Layer();
   void SetLayer(unsigned int layer);
+  Vector2* DrawOverrideHandle();
+  float* DrawOverrideXHandle();
   int *AlphaHandle();
   int EffectiveAlpha();
   bool Visible();

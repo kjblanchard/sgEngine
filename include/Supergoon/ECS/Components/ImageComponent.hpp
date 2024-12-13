@@ -3,7 +3,7 @@
 #include <memory>
 namespace Supergoon {
 struct ImageComponent {
-	std::shared_ptr<Image> ImagePtr = nullptr;
-	RectangleF SourceRect;
+  std::shared_ptr<Image> ImagePtr = nullptr;
+  RectangleF SourceRect;
 };
-}  // namespace Supergoon
+} // namespace Supergoon

@@ -1,3 +1,4 @@
+#include "Supergoon/Primitives/Vector2.hpp"
 #include <Supergoon/UI/UIObject.hpp>
 #include <Supergoon/UI/UIObjectAnimator.hpp>
 #include <algorithm>
@@ -29,6 +30,12 @@ UIObject::UIObject(UIObject *parent, string name, bool enabled, bool visible)
   if (parent) {
     parent->AddChild(this);
   }
+}
+Vector2 *UIObject::DrawOverrideHandle() {
+  return &_drawOverride;
+}
+float *UIObject::DrawOverrideXHandle() {
+  return &_drawOverride.X;
 }
 
 void UIObject::RemoveChild(const std::string &name) {
