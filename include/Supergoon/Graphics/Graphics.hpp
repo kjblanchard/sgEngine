@@ -2,7 +2,7 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 
-#include <Supergoon/Primitives/Color.hpp>
+#include <Supergoon/Primitives/Color.h>
 #include <Supergoon/Primitives/Rectangle.hpp>
 #include <string>
 namespace Supergoon {

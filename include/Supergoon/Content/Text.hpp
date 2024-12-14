@@ -1,7 +1,7 @@
 #pragma once
 #include <Supergoon/Content/Content.hpp>
 #include <Supergoon/Content/Font.hpp>
-#include <Supergoon/Primitives/Color.hpp>
+#include <Supergoon/Primitives/Color.h>
 #include <Supergoon/Primitives/Point.hpp>
 #include <Supergoon/Primitives/Rectangle.hpp>
 #include <memory>

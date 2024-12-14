@@ -1,6 +1,6 @@
 #pragma once
 #include <Supergoon/Content/Content.hpp>
-#include <Supergoon/Primitives/Color.hpp>
+#include <Supergoon/Primitives/Color.h>
 #include <Supergoon/Primitives/Rectangle.hpp>
 #include <string>
 typedef struct SDL_Surface SDL_Surface;
