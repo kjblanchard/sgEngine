@@ -17,6 +17,7 @@
 #include <Supergoon/Log.hpp>
 #include <Supergoon/Sound.hpp>
 #include <Supergoon/UI/UI.hpp>
+#include <Supergoon/Lua.h>
 #include <Supergoon/pch.hpp>
 
 using json = nlohmann::json;
@@ -24,112 +25,113 @@ using namespace Supergoon;
 json configData;
 
 SDL_AppResult SDL_AppInit(void **appState, int, char *[]) {
-	if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMEPAD)) {
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Couldn't initialize SDL!", SDL_GetError(), NULL);
-		return SDL_APP_FAILURE;
-	}
-	sgInitializeDebugLogFile();
+  if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMEPAD)) {
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Couldn't initialize SDL!", SDL_GetError(), NULL);
+    return SDL_APP_FAILURE;
+  }
+  sgInitializeDebugLogFile();
 #ifdef imgui
-	Widgets::InitializeWidgets();
+  Widgets::InitializeWidgets();
 #endif
-	geInitializeKeyboard();
-	geInitializeJoysticks();
+  geInitializeKeyboard();
+  geInitializeJoysticks();
+  sgInitializeLua();
 
-	auto game = sgRegisterGame();
-	*appState = game;
-	game->InternalReset();
-	return SDL_APP_CONTINUE;
+  auto game = sgRegisterGame();
+  *appState = game;
+  game->InternalReset();
+  return SDL_APP_CONTINUE;
 }
 
 SDL_AppResult SDL_AppEvent(void *appState, SDL_Event *event) {
-	return (SDL_AppResult)((Game *)appState)->HandleEvent(event);
+  return (SDL_AppResult)((Game *)appState)->HandleEvent(event);
 }
 
 SDL_AppResult SDL_AppIterate(void *appState) {
-	geUpdateKeyboard();
-	auto game = (Game *)appState;
-	game->InternalUpdate();
-	game->InternalDraw();
-	geUpdateControllerLastFrame();
-	return SDL_APP_CONTINUE;
+  geUpdateKeyboard();
+  auto game = (Game *)appState;
+  game->InternalUpdate();
+  game->InternalDraw();
+  geUpdateControllerLastFrame();
+  return SDL_APP_CONTINUE;
 }
 
 void SDL_AppQuit(void *appState, SDL_AppResult) {
-	auto game = (Game *)appState;
-	game->Reset();
+  auto game = (Game *)appState;
+  game->Reset();
 }
 
 Game::~Game() {
-	sgCloseDebugLogFile();
-	_graphics->CloseImGui();
+  sgCloseDebugLogFile();
+  _graphics->CloseImGui();
 }
 void Game::Initialize() {
-	std::string filename = SDL_GetBasePath() + std::string("assets/config.json");
-	auto fileStream = SafeLoadFile(filename);
-	configData = json::parse(fileStream);
+  std::string filename = SDL_GetBasePath() + std::string("assets/config.json");
+  auto fileStream = SafeLoadFile(filename);
+  configData = json::parse(fileStream);
 
-	int windowWidth = configData["window"]["x"];
-	int windowHeight = configData["window"]["y"];
-	int worldWidth = configData["world"]["x"];
-	int worldHeight = configData["world"]["y"];
-	std::string windowTitle = configData["window"]["title"];
-	_events = std::make_shared<Events>(this);
-	_sound = std::make_shared<Sound>();
-	_graphics = std::make_shared<Graphics>();
-	_graphics->CreateWindow(windowWidth, windowHeight, windowTitle);
-	_graphics->SetWindowScaling(worldWidth, worldHeight);
-	geClockStart(&_clock);
-	InitializeImGui();
-	_graphics->InitializeImGui();
-	_sound->InitializeSound();
-	_initialized = true;
+  int windowWidth = configData["window"]["x"];
+  int windowHeight = configData["window"]["y"];
+  int worldWidth = configData["world"]["x"];
+  int worldHeight = configData["world"]["y"];
+  std::string windowTitle = configData["window"]["title"];
+  _events = std::make_shared<Events>(this);
+  _sound = std::make_shared<Sound>();
+  _graphics = std::make_shared<Graphics>();
+  _graphics->CreateWindow(windowWidth, windowHeight, windowTitle);
+  _graphics->SetWindowScaling(worldWidth, worldHeight);
+  geClockStart(&_clock);
+  InitializeImGui();
+  _graphics->InitializeImGui();
+  _sound->InitializeSound();
+  _initialized = true;
 }
 
 int Game::HandleEvent(SDL_Event *event) {
-	return _events->HandleEvent(event);
+  return _events->HandleEvent(event);
 }
 
 void Game::InitializeImGui() {
 #ifdef imgui
-	ImGui::CreateContext();
-	ImGuiIO &io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;	   // IF using Docking Branch
-	static auto thing = std::string(SDL_GetPrefPath("Supergoon Games", "EscapeTheFate")) + "debug.ini";
-	io.IniFilename = thing.c_str();
+  ImGui::CreateContext();
+  ImGuiIO &io = ImGui::GetIO();
+  io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+  io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
+  io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // IF using Docking Branch
+  static auto thing = std::string(SDL_GetPrefPath("Supergoon Games", "EscapeTheFate")) + "debug.ini";
+  io.IniFilename = thing.c_str();
 #endif
 }
 
 void Game::InternalUpdate() {
-	geClockUpdate(&_clock);
-	_sound->Update();
-	Update();
+  geClockUpdate(&_clock);
+  _sound->Update();
+  Update();
 }
 
 void Game::InternalDraw() {
-	_graphics->DrawStart();
-	Draw();
-	_graphics->DrawImGui();
-	_graphics->DrawEnd();
+  _graphics->DrawStart();
+  Draw();
+  _graphics->DrawImGui();
+  _graphics->DrawEnd();
 }
 
 void Game::InternalReset() {
-	Reset();
-	UI::Reset();
-	GameObject::ClearGameObjects();
-	ContentRegistry::DestroyAllContent();
-	if (!_initialized) {
-		Initialize();
-	}
-	UI::Initialize();
-	Start();
+  Reset();
+  UI::Reset();
+  GameObject::ClearGameObjects();
+  ContentRegistry::DestroyAllContent();
+  if (!_initialized) {
+    Initialize();
+  }
+  UI::Initialize();
+  Start();
 }
 
 double Game::DeltaTime() {
-	return geClockGetUpdateTimeSeconds();
+  return geClockGetUpdateTimeSeconds();
 }
 
 double Game::DeltaTimeMS() {
-	return geClockGetUpdateTimeMilliseconds();
+  return geClockGetUpdateTimeMilliseconds();
 }

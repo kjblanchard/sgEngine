@@ -1,4 +1,4 @@
-#include "Supergoon/Primitives/Vector2.hpp"
+#include "Supergoon/Primitives/Vector2.h"
 #include <Supergoon/UI/UIObject.hpp>
 #include <Supergoon/UI/UIObjectAnimator.hpp>
 #include <algorithm>
@@ -26,12 +26,12 @@ string Supergoon::GetWidgetTypeName(BuiltinWidgetTypes widget) {
 UIObject::UIObject() = default;
 
 UIObject::UIObject(UIObject *parent, string name, bool enabled, bool visible)
-    : Name(name), Enabled(enabled), Parent(parent), _drawOverride(0, 0), _visible(visible) {
+    : Name(name), Enabled(enabled), Parent(parent), _drawOverride{0, 0}, _visible(visible) {
   if (parent) {
     parent->AddChild(this);
   }
 }
-Vector2 *UIObject::DrawOverrideHandle() {
+sgVector2 *UIObject::DrawOverrideHandle() {
   return &_drawOverride;
 }
 float *UIObject::DrawOverrideXHandle() {
@@ -103,7 +103,7 @@ bool UIObject::Visible() {
 
 void UIObject::OnDirty() {}
 
-void UIObject::SetDrawOverride(Vector2 loc) {
+void UIObject::SetDrawOverride(sgVector2 loc) {
   _drawOverride = loc;
   SetDirty();
 }

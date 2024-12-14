@@ -86,6 +86,14 @@ if(SYSTEM_PACKAGES) # If we are using system packages, then we should try to fin
         list(APPEND EXTERNAL_LIBS ${LIB_OGG})
     endif(LIB_OGG)
 
+    find_library(LIB_LUA
+        PATH_SUFFIXES .a .dll
+        NAMES lua_static lua
+        HINTS /usr/local/bin /usr/local/lib )
+    if(LIB_LUA)
+        list(APPEND EXTERNAL_LIBS ${LIB_LUA})
+    endif(LIB_OGG)
+
     find_package(Freetype)
 
     if(FREETYPE_FOUND)
@@ -153,6 +161,18 @@ if(NOT LIB_VORBIS)
     FetchContent_MakeAvailable(LIB_VORBIS)
     list(APPEND EXTERNAL_LIBS vorbisenc vorbisfile vorbis)
 endif(NOT LIB_VORBIS)
+
+if(NOT LIB_LUA)
+    message(STATUS "Lua not found. Fetching VORBIS...")
+    FetchContent_Declare(
+        LIB_LUA
+        GIT_REPOSITORY https://github.com/walterschell/Lua.git
+        GIT_TAG v5.3.3
+        EXCLUDE_FROM_ALL
+    )
+    FetchContent_MakeAvailable(LIB_LUA)
+    list(APPEND EXTERNAL_LIBS lua_static)
+endif(NOT LIB_LUA)
 
 if(DEBUG_CMAKE_VARIABLES)
     get_cmake_property(ALL_VARIABLES VARIABLES)

@@ -1,6 +1,6 @@
 #pragma once
 #include <Supergoon/Primitives/Rectangle.hpp>
-#include <Supergoon/Primitives/Vector2.hpp>
+#include <Supergoon/Primitives/Vector2.h>
 #include <memory>
 #include <string>
 #include <vector>
@@ -35,8 +35,8 @@ public:
   void SetAlpha(int alpha);
   unsigned int Layer();
   void SetLayer(unsigned int layer);
-  Vector2* DrawOverrideHandle();
-  float* DrawOverrideXHandle();
+  sgVector2 *DrawOverrideHandle();
+  float *DrawOverrideXHandle();
   int *AlphaHandle();
   int EffectiveAlpha();
   bool Visible();
@@ -46,7 +46,7 @@ public:
   void DirtyInternal();
   void UpdateInternal();
   void DrawInternal();
-  void SetDrawOverride(Vector2 loc);
+  void SetDrawOverride(sgVector2 loc);
 
   std::string Name;
   // When one of the children of this object are dirty, should we dirty too?  This is for HLG, VLG mainly.
@@ -55,14 +55,14 @@ public:
   UIObject *Parent = nullptr;
   RectangleF Bounds = {0, 0, 0, 0};
   std::vector<std::shared_ptr<UIObject>> Children;
-  Vector2 Offset = {0, 0};
-  Vector2 LayoutGroupOffset = {0, 0};
+  sgVector2 Offset = {0, 0};
+  sgVector2 LayoutGroupOffset = {0, 0};
   int WidgetType = 0;
   std::vector<std::shared_ptr<UIObjectAnimatorBase>> Animators;
 
 protected:
   bool Dirty = true;
-  Vector2 _drawOverride;
+  sgVector2 _drawOverride = {0, 0};
   int _alpha = 255;
   bool _visible = true;
   int _layer = 0;

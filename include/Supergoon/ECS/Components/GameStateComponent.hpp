@@ -1,5 +1,5 @@
 #pragma once
-#include <Supergoon/Primitives/Vector2.hpp>
+#include <Supergoon/Primitives/Vector2.h>
 #include <string>
 namespace Supergoon {
 struct GameState {
@@ -20,7 +20,7 @@ struct GameState {
   bool Interacting;
   bool InBattle;
   std::string PlayerLoadLevel = "";
-  Vector2 PlayerLoadLocation = Vector2();
+  sgVector2 PlayerLoadLocation = {0,0};
   int PlayerLoadDirection;
 };
 } // namespace Supergoon

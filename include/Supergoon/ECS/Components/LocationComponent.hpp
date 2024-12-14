@@ -1,8 +1,8 @@
 #pragma once
-#include <Supergoon/Primitives/Vector2.hpp>
+#include <Supergoon/Primitives/Vector2.h>
 namespace Supergoon {
 struct LocationComponent {
-	Vector2 Location = {0,0};
+  sgVector2 Location = {0, 0};
 };
 
-}  // namespace Bba
+} // namespace Supergoon
