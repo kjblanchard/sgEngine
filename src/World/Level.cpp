@@ -247,7 +247,7 @@ GameObject *Level::NewSolidObject(TiledMap::TiledObject &t) {
   auto go = new GameObject();
   auto l = LocationComponent();
   auto s = SolidComponent();
-  s.Size = Point{t.Width, t.Height};
+  s.Size = {t.Width, t.Height};
   l.Location.X = t.X;
   l.Location.Y = t.Y;
   go->AddComponent<SolidComponent>(s);
@@ -258,7 +258,7 @@ GameObject *Level::NewSolidObject(Rectangle r) {
   auto go = new GameObject();
   auto l = LocationComponent();
   auto s = SolidComponent();
-  s.Size = Point{r.W, r.H};
+  s.Size = {r.W, r.H};
   l.Location.X = r.X;
   l.Location.Y = r.Y;
   go->AddComponent<SolidComponent>(s);

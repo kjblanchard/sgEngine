@@ -1,7 +1,7 @@
 #pragma once
-#include <Supergoon/Primitives/Point.hpp>
+#include <Supergoon/Primitives/Point.h>
 namespace Supergoon {
 struct SolidComponent {
-	Point Size;
+  sgPoint Size;
 };
-}  // namespace Supergoon
+} // namespace Supergoon

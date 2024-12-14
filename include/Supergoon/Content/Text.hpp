@@ -2,7 +2,7 @@
 #include <Supergoon/Content/Content.hpp>
 #include <Supergoon/Content/Font.hpp>
 #include <Supergoon/Primitives/Color.h>
-#include <Supergoon/Primitives/Point.hpp>
+#include <Supergoon/Primitives/Point.h>
 #include <Supergoon/Primitives/Rectangle.hpp>
 #include <memory>
 #include <vector>
@@ -13,14 +13,14 @@ public:
   Text(std::string text, std::string fontName, int size);
   ~Text();
   void Draw(RectangleF &src, RectangleF &dst);
-  inline Point Size() { return _textSize; }
+  inline sgPoint Size() { return _textSize; }
   virtual void Load() override;
   virtual void Unload() override;
-  void SetTextBounds(Point bounds);
+  void SetTextBounds(sgPoint bounds);
   void SetLetterCount(int letters);
   void SetWordWrap(bool wordWrap);
   void SetAlpha(int alpha);
-  inline Point TextBounds() { return _textBounds; }
+  inline sgPoint TextBounds() { return _textBounds; }
   inline virtual std::string Type() override { return "Text"; }
 
 private:
@@ -42,12 +42,12 @@ private:
   std::shared_ptr<Font> _font;
   std::shared_ptr<Image> _image;
   // We will keep the text within this space
-  Point _textBounds = {0, 0};
+  sgPoint _textBounds = {0, 0};
   // The actual size of the text
-  Point _textSize = {0, 0};
+  sgPoint _textSize = {0, 0};
   sgColor _backgroundColor = {0, 0, 0, 0};
   // Where we will draw each letter in the text.
-  std::vector<Point> _letterPoints;
+  std::vector<sgPoint> _letterPoints;
   // For debugging
   friend class UIWidget;
   // For control of the text.

@@ -2,11 +2,8 @@
 #include <Supergoon/Content/Image.hpp>
 #include <Supergoon/ECS/Gameobject.hpp>
 #include <Supergoon/Physics/Physics.hpp>
-#include <Supergoon/Primitives/Point.hpp>
+#include <Supergoon/Primitives/Point.h>
 #include <Supergoon/World/TiledMap.hpp>
-#include <functional>
-#include <memory>
-#include <tuple>
 namespace Supergoon {
 // class Panel;
 /**
@@ -24,7 +21,7 @@ public:
   std::string GetBgm();
   // const inline std::string &GetName() const { return _name; }
   static const inline std::string &GetName() { return _currentLevel->_name; }
-  inline Point GetSize() { return Point{_mapData->Width * _mapData->TileWidth, _mapData->Height * _mapData->TileHeight}; }
+  inline sgPoint GetSize() { return {_mapData->Width * _mapData->TileWidth, _mapData->Height * _mapData->TileHeight}; }
   static std::function<void()> LoadFunc;
   static void AddLevelEventHandlers();
   static void Reset();
