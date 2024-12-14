@@ -27,9 +27,9 @@ public:
   inline void SetVisible(bool visible) { _visible = visible; }
   inline int Width() { return _width; }
   inline int Height() { return _height; }
-  void Clear(Color color = {0, 0, 0, 255});
+  void Clear(sgColor color = {0, 0, 0, 255});
   // Updates the color modifier on this texture.
-  void SetImageColor(Color colorToUse);
+  void SetImageColor(sgColor colorToUse);
   void DrawImageToImage(Image &src, RectangleF &srcRect, RectangleF &dstRect);
   void SetAlpha(int alpha);
 
@@ -40,7 +40,7 @@ private:
   float _width = 0;
   float _height = 0;
   SDL_Surface *_surface = nullptr;
-  Color _imageColor = {255, 255, 255, 255};
+  sgColor _imageColor = {255, 255, 255, 255};
 
   friend class Graphics;
 };

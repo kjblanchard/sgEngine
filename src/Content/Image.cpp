@@ -123,7 +123,7 @@ void Image::Draw(RectangleF &src, RectangleF &dst) {
   graphics->DrawImage(*this, &src, &dst);
 }
 
-void Image::SetImageColor(Color colorToUse) {
+void Image::SetImageColor(sgColor colorToUse) {
   _imageColor = colorToUse;
   if (_isLoaded) {
     auto graphics = Graphics::Instance();
@@ -131,7 +131,7 @@ void Image::SetImageColor(Color colorToUse) {
   }
 }
 
-void Image::Clear(Color color) {
+void Image::Clear(sgColor color) {
   if (_imageType != ImageType::RenderTarget) {
     return;
   }

@@ -94,8 +94,7 @@ void UIWidget::DrawUIObjects(UIObject *uiObject, std::string panelName) {
       ImGui::Checkbox(childDebugBoxCheckbox.c_str(), &shouldDrawDebugBox);
 
       if (shouldDrawDebugBox) {
-        // auto color = Color{255,0,0,255};
-        Graphics::Instance()->DrawRect(textUIObject->Bounds, Color{255, 0, 0, 255});
+        Graphics::Instance()->DrawRect(textUIObject->Bounds, {255, 0, 0, 255});
       }
       if (ImGui::DragInt(childLettersToDraw.c_str(), &textUIObject->_currentLetters, 1, 0, textUIObject->TextPtr->_text.length())) {
         uiObject->SetDirty();
