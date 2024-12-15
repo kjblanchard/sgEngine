@@ -9,6 +9,7 @@ using namespace Supergoon;
 
 static const int MAX_MESSAGES = 999;
 static bool scrollToBottom = false;
+static bool autoScroll = true;
 std::deque<std::pair<int, std::string>> consoleMessages;
 
 static void engineLogFunc(const char *time, const char *message, int logLevel) {
@@ -27,6 +28,12 @@ void ConsoleWidget::ShowConsoleWidget() {
     ImGui::End();
     return;
   }
+  ImGui::Checkbox("Autoscroll", &autoScroll);
+  ImGui::SameLine();
+  if (ImGui::Button("Clear Logs")) {
+    consoleMessages.clear();
+  }
+  ImGui::BeginChild("##log", ImVec2(0.0f, 0.0f), ImGuiChildFlags_Borders, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
   for (auto message : consoleMessages) {
     sgColor color = {255, 255, 255, 255};
     std::string typeText = "Info - ";
@@ -42,10 +49,11 @@ void ConsoleWidget::ShowConsoleWidget() {
     ImGui::Text("%s %s", typeText.c_str(), message.second.c_str());
     ImGui::PopStyleColor();
   }
-  if (scrollToBottom) {
+  if (autoScroll && scrollToBottom) {
     ImGui::SetScrollHereY(1.0);
   }
   scrollToBottom = false;
+  ImGui::EndChild();
 
   ImGui::End();
 }

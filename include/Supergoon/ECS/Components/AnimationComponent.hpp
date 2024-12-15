@@ -12,5 +12,6 @@ struct AnimationComponent {
   bool Playing;
   std::shared_ptr<AsepriteAnimation> Animation;
   std::shared_ptr<Image> AnimationImage;
+  std::function<void(AsepriteAnimation* anim,  std::string)> OnAnimationEnd = nullptr;
 };
 } // namespace Supergoon
