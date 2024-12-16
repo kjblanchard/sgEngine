@@ -24,16 +24,12 @@ void AsepriteAnimation::Load() {
 
 void AsepriteAnimation::UpdateAnimation(double d) {
   if (_repeats == 0) {
-    sgLogWarn("Repeats are 0");
     return;
   }
   auto justFinished = false;
   _frameTime += d;
   auto frameData = _aseDocument->frames[_frame];
   auto animData = _aseDocument->meta.frameTags[_animNum];
-  if (animData.name == "slash2") {
-    sgLogWarn("Its slash 2 boi");
-  }
   // use a while loop incase the deltat time is long
   while (_frameTime >= frameData.duration) {
     _frameTime -= frameData.duration;
@@ -61,9 +57,7 @@ void AsepriteAnimation::UpdateAnimation(double d) {
         _nextFrame = (_frame + 1 > animData.to) ? animData.from : _frame + 1;
         // If this would cause us to loop to the beginning, we should set just finished and decrement repeats
         if (_nextFrame == animData.from) {
-          sgLogWarn("Repeats are %d for %s", _repeats, animData.name.c_str());
           _repeats = _repeats == -1 ? -1 : _repeats - 1;
-          sgLogWarn("Repeats are %d for %s", _repeats, animData.name.c_str());
           justFinished = true;
         }
       } else if (animData.direction == "reverse") {
@@ -76,7 +70,6 @@ void AsepriteAnimation::UpdateAnimation(double d) {
     }
     if (justFinished && OnAnimationEnd) {
       OnAnimationEnd(this, animData.name);
-      sgLogWarn("We just finished the anim and could call the func.");
     }
     // We should only update the rect, if we have any repeats left.
     if (_repeats == 0) {
@@ -100,7 +93,7 @@ void AsepriteAnimation::PlayAnimation(std::string a) {
       return;
     }
   }
-  sgLogWarn("Could not find animation for %s", a.c_str());
+  sgLogError("Could not find animation for %s", a.c_str());
 }
 void AsepriteAnimation::UpdateRect() {
   _rect.X = _aseDocument->frames[_frame].frame.x;
