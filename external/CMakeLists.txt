@@ -92,7 +92,7 @@ if(SYSTEM_PACKAGES) # If we are using system packages, then we should try to fin
         HINTS /usr/local/bin /usr/local/lib )
     if(LIB_LUA)
         list(APPEND EXTERNAL_LIBS ${LIB_LUA})
-    endif(LIB_OGG)
+    endif(LIB_LUA)
 
     find_package(Freetype)
 
@@ -163,7 +163,7 @@ if(NOT LIB_VORBIS)
 endif(NOT LIB_VORBIS)
 
 if(NOT LIB_LUA)
-    message(STATUS "Lua not found. Fetching VORBIS...")
+    message(STATUS "Lua not found. Fetching Lua...")
     FetchContent_Declare(
         LIB_LUA
         GIT_REPOSITORY https://github.com/walterschell/Lua.git

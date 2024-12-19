@@ -34,6 +34,7 @@ void Sound::InitializeSound() {
     }
     SDL_free(name);
   });
+
   Events::RegisterEventHandler(Events::BuiltinEvents.StopBgmEvent, [this](int slot, void *shouldFade, void *) {
     if (shouldFade) {
       auto fade = (bool)shouldFade;
