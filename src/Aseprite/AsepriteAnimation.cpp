@@ -37,7 +37,10 @@ void AsepriteAnimation::UpdateAnimation(double d) {
       if (_reverse) {
         _nextFrame = _frame - 1;
         if (_nextFrame < animData.from) {
-          _repeats = _repeats == -1 ? -1 : --_repeats;
+          if (_repeats != -1) {
+            --_repeats;
+          }
+          // _repeats = _repeats == -1 ? -1 : --_repeats;
           _nextFrame = animData.from + 1;
           justFinished = true;
           _reverse = false;
@@ -45,7 +48,10 @@ void AsepriteAnimation::UpdateAnimation(double d) {
       } else {
         _nextFrame = _frame + 1;
         if (_nextFrame > animData.to) {
-          _repeats = _repeats == -1 ? -1 : --_repeats;
+          if (_repeats != -1) {
+            --_repeats;
+          }
+          // _repeats = _repeats == -1 ? -1 : --_repeats;
           _nextFrame = animData.to - 1;
           justFinished = true;
           _reverse = true;

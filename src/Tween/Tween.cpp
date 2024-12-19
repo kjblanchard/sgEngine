@@ -63,7 +63,10 @@ bool Tween::Update() {
   if (Complete()) {
     if (_loops == -1 || _loops > 0) {
       Restart();
-      _loops = _loops == -1 ? -1 : --_loops;
+      if(_loops != -1) {
+        --_loops;
+      }
+      // _loops = _loops == -1 ? -1 : --_loops;
     }
     if (EndFunc) {
       EndFunc();
