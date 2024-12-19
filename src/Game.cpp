@@ -10,14 +10,15 @@
 #include <Supergoon/Widgets/Widgets.hpp>
 #endif
 #include <Supergoon/Content/ContentRegistry.hpp>
+#include <Supergoon/Coroutine.h>
 #include <Supergoon/Events.hpp>
 #include <Supergoon/Filesystem.hpp>
 #include <Supergoon/Game.hpp>
 #include <Supergoon/Graphics/Graphics.hpp>
 #include <Supergoon/Log.hpp>
+#include <Supergoon/Lua.h>
 #include <Supergoon/Sound.hpp>
 #include <Supergoon/UI/UI.hpp>
-#include <Supergoon/Lua.h>
 #include <Supergoon/pch.hpp>
 
 using json = nlohmann::json;
@@ -106,6 +107,7 @@ void Game::InitializeImGui() {
 void Game::InternalUpdate() {
   geClockUpdate(&_clock);
   _sound->Update();
+  sgUpdateCoroutines(DeltaTime());
   Update();
 }
 

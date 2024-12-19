@@ -20,6 +20,7 @@ public:
   void SetLetterCount(int letters);
   void SetWordWrap(bool wordWrap);
   void SetAlpha(int alpha);
+  void SetTextColor(sgColor color);
   inline sgPoint TextBounds() { return _textBounds; }
   inline virtual std::string Type() override { return "Text"; }
 
@@ -46,6 +47,7 @@ private:
   // The actual size of the text
   sgPoint _textSize = {0, 0};
   sgColor _backgroundColor = {0, 0, 0, 0};
+
   // Where we will draw each letter in the text.
   std::vector<sgPoint> _letterPoints;
   // For debugging

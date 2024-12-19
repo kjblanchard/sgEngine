@@ -284,3 +284,6 @@ void Text::SetWordWrap(bool wordWrap) {
 void Text::SetAlpha(int alpha) {
   _image->SetAlpha(alpha);
 }
+void Text::SetTextColor(sgColor color) {
+  _image->SetImageColor(color);
+}

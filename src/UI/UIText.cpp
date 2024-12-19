@@ -35,6 +35,7 @@ void UIText::OnDirty() {
   TextPtr->LoadContent();
   TextPtr->SetLetterCount(_currentLetters);
   TextPtr->SetAlpha(EffectiveAlpha());
+  TextPtr->SetTextColor(_textColor);
   // If our bounds are set to 0, then we should use the full size.
   if (Bounds.W == 0 && Bounds.H == 0) {
     TextSrcRect = RectangleF{0, 0, (float)TextPtr->Size().X, (float)TextPtr->Size().Y};

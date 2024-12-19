@@ -46,9 +46,17 @@ public:
   bool Update();
   inline float CurrentLength() { return _currentDuration; }
   inline float TotalLength() { return _duration; }
-  inline void Restart() { _currentDuration = 0; }
+  inline void Start() { _started = true; }
+  inline void Restart() {
+    _currentDuration = 0;
+    _started = true;
+  }
   inline bool Complete() { return _currentDuration >= _duration; }
   inline float Percent() { return _currentDuration / _duration; }
+  inline void SetAutostart(bool autostart) {
+    _autostart = autostart;
+    Restart();
+  }
   std::function<void()> StartFunc = nullptr;
   std::function<void()> UpdateFunc = nullptr;
   std::function<void()> EndFunc = nullptr;
@@ -57,6 +65,8 @@ private:
   void UpdateInternal();
   std::variant<std::monostate, float *, int *> value;
   float _begin = 0, _end = 0, _currentDuration = 0, _duration = 0;
+  bool _started = false;
+  bool _autostart = true;
   Easings _easeType;
   int _loops = 0;
 };

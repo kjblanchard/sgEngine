@@ -1,4 +1,5 @@
 #pragma once
+#include "Supergoon/Primitives/Color.h"
 #include <Supergoon/Content/Text.hpp>
 #include <Supergoon/UI/Panel.hpp>
 #include <Supergoon/UI/UIObject.hpp>
@@ -13,6 +14,10 @@ public:
   virtual void OnDirty() override;
   inline void SetCenter(bool center) {
     CenterTextX = center;
+    Dirty = true;
+  }
+  inline void SetColor(sgColor color) {
+    _textColor = color;
     Dirty = true;
   }
   inline void SetWordWrap(bool wrap) {
@@ -39,6 +44,7 @@ public:
 private:
   bool _centerTextY = false;
   int _currentLetters = 0;
+  sgColor _textColor = {255, 255, 255, 255};
 
 private:
   friend class UIWidget;

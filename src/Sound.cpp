@@ -187,8 +187,11 @@ void Sound::CheckForStaleSfxStreams() {
 
 void Sound::PlaySfx(Sfx *sfx, float volume) {
   if (_usableSfxStreams.empty()) {
-    sgLogWarn("No SFX buffers available to play sound %s\n", sfx->Filepath().c_str());
-    return;
+    CheckForStaleSfxStreams();
+    if (_usableSfxStreams.empty()) {
+      sgLogWarn("No SFX buffers available to play sound %s\n", sfx->Filepath().c_str());
+      return;
+    }
   }
   auto stream = _usableSfxStreams.front();
   sfx->SgSfx()->Volume = volume * _globalSfxVolume;

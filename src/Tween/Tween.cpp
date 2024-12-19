@@ -43,6 +43,12 @@ void Tween::UpdateInternal() {
 }
 
 bool Tween::Update() {
+  if (!_started == _autostart) {
+    _started = true;
+  }
+  if (!_started) {
+    return false;
+  }
   if (Complete()) {
     return true;
   }

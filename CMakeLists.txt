@@ -9,6 +9,7 @@ set(SRC_FILES
     src/Lua.c
     src/Video.cpp
     src/Sound.cpp
+    src/Coroutine.c
     src/Tween/Tween.cpp
     src/Tween/Sequence.cpp
     src/Events.cpp
