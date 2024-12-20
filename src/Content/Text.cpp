@@ -40,6 +40,10 @@ void Text::MeasureText() {
   int startLoc = ascenderInPixels + _paddingT;
   _letterPoints.clear();
   _letterPoints.resize(_text.length());
+  for (auto &point : _letterPoints) {
+    point.X = 0;
+    point.Y = 0;
+  }
 
   int penX = _paddingL;
   int penY = startLoc;

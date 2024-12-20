@@ -2,6 +2,6 @@
 #include <Supergoon/Primitives/Point.h>
 namespace Supergoon {
 struct SolidComponent {
-  sgPoint Size;
+  sgPoint Size = {0, 0};
 };
 } // namespace Supergoon

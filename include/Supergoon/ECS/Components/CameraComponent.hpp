@@ -6,7 +6,7 @@ struct LocationComponent;
 
 struct CameraComponent {
   RectangleF Box;
-  sgPoint Bounds;
+  sgPoint Bounds = {0, 0};
   LocationComponent *FollowTarget;
 };
 

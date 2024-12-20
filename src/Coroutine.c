@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 typedef struct coroutine {
-  unsigned int Id;
+  // unsigned int Id;
   void *Userdata;
   void (*Func)(void *);
   float Waittime;
