@@ -81,9 +81,6 @@ Level::Level(const char *filename)
     gamestate.WindowWidth = Graphics::Instance()->LogicalWidth();
     gamestate.CameraFollowTarget = true;
     gamestate.Loading = false;
-    // Battle
-    gamestate.InBattle = false;
-    gamestate.BattleData.BattleID = 0;
     gsGo->AddComponent<GameState>(gamestate);
     gsGo->AddComponent<KeepAliveComponent>(keepalive);
     AddGameObjectToLevel(gsGo);
@@ -174,9 +171,9 @@ void Level::LoadNewLevel(std::string level) {
   if (!bgm.empty()) {
     Events::PushEvent(Events::BuiltinEvents.PlayBgmEvent, 0, (void *)strdup(bgm.c_str()));
   }
-  if (comp.InBattle) {
-    UI::FadeIn();
-  }
+  // if (comp.InBattle) {
+  //   UI::FadeIn();
+  // }
 }
 
 void Level::LoadAllGameObjects() {

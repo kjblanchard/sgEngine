@@ -43,7 +43,7 @@ void Tween::UpdateInternal() {
 }
 
 bool Tween::Update() {
-  if (!_started == _autostart) {
+  if (_autostart && !_started) {
     _started = true;
   }
   if (!_started) {
@@ -63,7 +63,7 @@ bool Tween::Update() {
   if (Complete()) {
     if (_loops == -1 || _loops > 0) {
       Restart();
-      if(_loops != -1) {
+      if (_loops != -1) {
         --_loops;
       }
       // _loops = _loops == -1 ? -1 : --_loops;
