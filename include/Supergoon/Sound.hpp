@@ -39,6 +39,7 @@ public:
   void SetGlobalBgmVolume(float volume);
   inline void SetGlobalSfxVolume(float volume) { _globalSfxVolume = volume; };
   void PlaySfx(Sfx *sfx, float volume = 1.0);
+  void PlaySfxOneShot(const char *name, float volume = 1.0);
   static inline Sound *Instance() { return _instance; }
 
 private:

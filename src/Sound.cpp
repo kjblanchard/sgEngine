@@ -200,5 +200,13 @@ void Sound::PlaySfx(Sfx *sfx, float volume) {
   _playingStreams.push_back(stream);
   _usableSfxStreams.pop();
 }
+void Sound::PlaySfxOneShot(const char *name, float volume) {
+  auto sfx = ContentRegistry::CreateContent<Sfx>(name);
+  if (!sfx) {
+    return;
+  }
+  sfx->LoadContent();
+  PlaySfx(sfx.get(), volume);
+}
 
 } // namespace Supergoon
