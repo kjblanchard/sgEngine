@@ -8,6 +8,7 @@ GameObject::GameObject(flecs::entity e) : _entity(e) {}
 
 GameObject::GameObject() : _entity(_world.entity()) {}
 GameObject::GameObject(int dummyBoi) : _entity(dummyBoi) {}
+GameObject::GameObject(GameObject *go) : _entity(go->_entity) {}
 
 void GameObject::FreeGameObject() {
   _entity.destruct();

@@ -5,7 +5,8 @@
 typedef struct coroutine {
   // unsigned int Id;
   void *Userdata;
-  void (*Func)(void *);
+  void *Userdata2;
+  void (*Func)(void *, void *);
   float Waittime;
   float CurrentTime;
   bool Started;
@@ -14,11 +15,12 @@ typedef struct coroutine {
 coroutine *firstCoroutine = NULL;
 coroutine *lastCoroutine = NULL;
 
-sgCoroutine sgAddCoroutine(float timeSeconds, void (*func)(void *), void *userdata) {
+sgCoroutine sgAddCoroutine(float timeSeconds, void (*func)(void *, void *), void *userdata, void *userdata2) {
   coroutine *co = malloc(sizeof(*co));
   co->CurrentTime = 0;
   co->Next = NULL;
   co->Userdata = userdata;
+  co->Userdata2 = userdata2;
   co->Func = func;
   co->Waittime = timeSeconds;
   co->Started = false;
@@ -39,7 +41,7 @@ void sgUpdateCoroutines(double deltaTime) {
       current->CurrentTime += deltaTime;
     }
     if (current->CurrentTime >= current->Waittime) {
-      current->Func(current->Userdata);
+      current->Func(current->Userdata, current->Userdata2);
       coroutine *toFree = current;
       if (previous) {
         previous->Next = current->Next;

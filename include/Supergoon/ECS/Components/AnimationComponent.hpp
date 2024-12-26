@@ -10,8 +10,9 @@ struct AnimationComponent {
   sgPoint Offset = {0, 0};
   sgPoint OverrideDrawSize = {0, 0};
   bool Playing;
+  bool Visible = true;
   std::shared_ptr<AsepriteAnimation> Animation;
   std::shared_ptr<Image> AnimationImage;
-  std::function<void(AsepriteAnimation* anim,  std::string)> OnAnimationEnd = nullptr;
+  std::function<void(AsepriteAnimation *anim, std::string)> OnAnimationEnd = nullptr;
 };
 } // namespace Supergoon

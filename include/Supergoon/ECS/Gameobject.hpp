@@ -8,6 +8,7 @@ namespace Supergoon {
 class GameObject {
 public:
   GameObject(flecs::entity e);
+  GameObject(GameObject *go);
   GameObject();
   // Use this to initialize this using a static gameobject, since the world isn't created at start time most of the time... Just make sure not to use it until you make a real one :)
   GameObject(int dummyGO);
