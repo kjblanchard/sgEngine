@@ -18,6 +18,8 @@ string Supergoon::GetWidgetTypeName(BuiltinWidgetTypes widget) {
     return "HLG";
   case BuiltinWidgetTypes::VerticalLayoutGroup:
     return "VLG";
+  case BuiltinWidgetTypes::ProgressBar:
+    return "Progress Bar";
   default:
     return "";
   }

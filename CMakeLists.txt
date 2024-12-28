@@ -36,6 +36,7 @@ set(SRC_FILES
     src/UI/UIObjectAnimator.cpp
     src/UI/UIHorizontalLayoutGroup.cpp
     src/UI/UIVerticalLayoutGroup.cpp
+    src/UI/UIProgressBar.cpp
 )
 
 if(imgui)

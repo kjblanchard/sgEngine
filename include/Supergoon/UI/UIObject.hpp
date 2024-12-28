@@ -15,6 +15,7 @@ enum class BuiltinWidgetTypes {
   Panel,
   HorizontalLayoutGroup,
   VerticalLayoutGroup,
+  ProgressBar,
 };
 
 std::string GetWidgetTypeName(BuiltinWidgetTypes widget);

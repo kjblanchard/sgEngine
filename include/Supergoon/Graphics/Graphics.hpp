@@ -21,6 +21,8 @@ public:
   void DrawImGui();
   void DrawImage(Image &image, RectangleF *srcR, RectangleF *dstR);
 
+  void DrawFilledRect(const RectangleF &rect, sgColor color = {255, 255, 255, 255});
+
   void DrawImageToImage(Image &src, Image &dst, RectangleF *srcR, RectangleF *dstR);
   SDL_Texture *CreateTextureFromSurface(SDL_Surface *surface);
   SDL_Texture *CreateRenderTargetTexture(int width, int height, sgColor color = {0, 0, 0, 255});

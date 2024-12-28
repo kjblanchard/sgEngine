@@ -37,11 +37,13 @@ Graphics::~Graphics() {
 // }
 
 // void geUtilsDrawFilledRect(geRectangle* dstRect, geColor* color) {
-// 	SDL_Renderer* r = geGlobalRenderer();
-// 	SDL_SetRenderDrawColor(r, color->R, color->G, color->B, color->A);
-// 	SDL_RenderFillRect(r, (SDL_Rect*)dstRect);
-// 	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 // }
+void Graphics::DrawFilledRect(const RectangleF &rect, sgColor color) {
+
+  SDL_SetRenderDrawColor(_renderer, color.R, color.G, color.B, color.A);
+  SDL_RenderFillRect(_renderer, (SDL_FRect *)&rect);
+  SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
+}
 void Graphics::CreateWindow(int width, int height, std::string name) {
   _windowWidth = width;
   _windowHeight = height;

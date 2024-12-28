@@ -3,6 +3,7 @@
 #include <Supergoon/UI/UI.hpp>
 #include <Supergoon/UI/UIHorizontalLayoutGroup.hpp>
 #include <Supergoon/UI/UIImage.hpp>
+#include <Supergoon/UI/UIProgressBar.hpp>
 #include <Supergoon/UI/UIText.hpp>
 #include <Supergoon/UI/UIVerticalLayoutGroup.hpp>
 #include <Supergoon/Widgets/UIWidget.hpp>
@@ -41,15 +42,14 @@ void UIWidget::DrawUIObjects(UIObject *uiObject, std::string panelName) {
     }
     if (uiObject->WidgetType == (int)BuiltinWidgetTypes::Image) {
       auto imageObject = dynamic_cast<UIImage *>(uiObject);
-      std::string childLayerLabel = "Layer##" + panelName;
       std::string childWLabel = "Child W##" + panelName;
       std::string childHLabel = "Child H##" + panelName;
-      if (ImGui::DragInt(childLayerLabel.c_str(), &uiObject->_layer, 1, 0, 100)) {
-        uiObject->SetDirty();
-        if (uiObject->Parent) {
-          uiObject->SetDirty();
-        }
-      }
+      // if (ImGui::DragInt(childLayerLabel.c_str(), &uiObject->_layer, 1, 0, 100)) {
+      //   uiObject->SetDirty();
+      //   if (uiObject->Parent) {
+      //     uiObject->SetDirty();
+      //   }
+      // }
       if (ImGui::DragFloat(childWLabel.c_str(), &imageObject->Bounds.W, 1.0f)) {
         uiObject->SetDirty();
       }
@@ -59,7 +59,6 @@ void UIWidget::DrawUIObjects(UIObject *uiObject, std::string panelName) {
     } else if (uiObject->WidgetType == (int)BuiltinWidgetTypes::Text) {
       assert((UIText *)uiObject);
       auto textUIObject = (UIText *)uiObject;
-      std::string childLayerLabel = "Layer##" + panelName;
       std::string childW_label = "Width##" + panelName;
       std::string childH_label = "Height##" + panelName;
       std::string childXBounds = "TextBoundsX##" + panelName;
@@ -69,10 +68,10 @@ void UIWidget::DrawUIObjects(UIObject *uiObject, std::string panelName) {
       std::string childCenterLabelY = "CenterY##" + panelName;
       std::string childLettersToDraw = "Letters To Draw##" + panelName;
       std::string childDebugBoxCheckbox = "DebugBox##" + panelName;
-      if (ImGui::DragInt(childLayerLabel.c_str(), &uiObject->_layer, 1, 0, 100)) {
-        uiObject->SetDirty();
-        uiObject->SetDirty();
-      }
+      // if (ImGui::DragInt(childLayerLabel.c_str(), &uiObject->_layer, 1, 0, 100)) {
+      //   uiObject->SetDirty();
+      //   uiObject->SetDirty();
+      // }
       if (ImGui::DragFloat(childW_label.c_str(), &uiObject->Bounds.W, 1.0f, 0.0f, FLT_MAX)) {
         uiObject->SetDirty();
       }
@@ -114,7 +113,33 @@ void UIWidget::DrawUIObjects(UIObject *uiObject, std::string panelName) {
       if (ImGui::DragFloat(childSpaceLabel.c_str(), &horiGroup->YSpaceBetweenElements, 1.0f, -255, 255)) {
         uiObject->SetDirty();
       }
+    } else if (uiObject->WidgetType == (int)BuiltinWidgetTypes::ProgressBar) {
+      assert((UIProgressBar *)uiObject);
+      auto progressBar = (UIProgressBar *)uiObject;
+      std::string barOffsetXLabel = "BarOffsetX##" + panelName;
+      std::string barOffsetYLabel = "BarOffsetY##" + panelName;
+      std::string barXLabel = "BarWidth##" + panelName;
+      std::string barYLabel = "BarHeight##" + panelName;
+      std::string barPercentLabel = "BarPercent##" + panelName;
+      // std::string barColorLabel = "BarColor##" + panelName;
+      // ImGui::ColorPicker4(barColorLabel.c_str(), (float *)&progressBar->ProgressBarColor);
+      if (ImGui::DragFloat(barOffsetXLabel.c_str(), &progressBar->BarOffset.X, 1.0f, 0.0f)) {
+        progressBar->SetDirty();
+      }
+      if (ImGui::DragFloat(barOffsetYLabel.c_str(), &progressBar->BarOffset.Y, 1.0f, 0.0f)) {
+        progressBar->SetDirty();
+      }
+      if (ImGui::DragFloat(barXLabel.c_str(), &progressBar->BarSize.X, 1.0f, 0.0f, 200)) {
+        progressBar->SetDirty();
+      }
+      if (ImGui::DragFloat(barYLabel.c_str(), &progressBar->BarSize.Y, 1.0f, 0.0f, 200)) {
+        progressBar->SetDirty();
+      }
+      if (ImGui::DragInt(barPercentLabel.c_str(), &progressBar->BarPercent, 1.0f, 0.0f)) {
+        progressBar->SetDirty();
+      }
     }
+
     ImGui::Text("Object Children__");
     for (auto &value : uiObject->Children) {
       DrawUIObjects(value.get(), value->Name);
