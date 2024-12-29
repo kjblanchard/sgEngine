@@ -105,6 +105,7 @@ bool UIObject::Visible() {
 
 void UIObject::OnDirty() {}
 
+// TODO Does not set for children, this should be a virtual maybe, for uiprogressbar.
 void UIObject::SetDrawOverride(sgVector2 loc) {
   _drawOverride = loc;
   SetDirty();

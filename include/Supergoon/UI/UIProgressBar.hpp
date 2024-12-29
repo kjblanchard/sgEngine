@@ -4,11 +4,13 @@
 #include <Supergoon/UI/UIObject.hpp>
 namespace Supergoon {
 class Panel;
-class UIImage;
+// class UIImage;
+class UIAnimation;
 class UIProgressBar : public UIObject {
 public:
   UIProgressBar(UIObject *parent, std::string id, std::string imageName);
-  UIImage *ProgressBarImage = nullptr;
+  // UIImage *ProgressBarImage = nullptr;
+  UIAnimation *ProgressBarAnimation = nullptr;
   inline void SetBarPercent(unsigned int percent) {
     BarPercent = percent;
     SetDirty(true);

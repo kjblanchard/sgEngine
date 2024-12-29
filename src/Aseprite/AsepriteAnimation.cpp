@@ -22,16 +22,18 @@ void AsepriteAnimation::Load() {
   UpdateRect();
 }
 
-void AsepriteAnimation::UpdateAnimation(double d) {
+bool AsepriteAnimation::UpdateAnimation(double d) {
   if (_repeats == 0) {
-    return;
+    return false;
   }
   auto justFinished = false;
   _frameTime += d;
   auto frameData = _aseDocument->frames[_frame];
   auto animData = _aseDocument->meta.frameTags[_animNum];
+  auto progressed = false;
   // use a while loop incase the deltat time is long
   while (_frameTime >= frameData.duration) {
+    progressed = true;
     _frameTime -= frameData.duration;
     if (animData.direction == "pingpong") {
       if (_reverse) {
@@ -79,11 +81,12 @@ void AsepriteAnimation::UpdateAnimation(double d) {
     }
     // We should only update the rect, if we have any repeats left.
     if (_repeats == 0) {
-      return;
+      return false;
     }
     _frame = _nextFrame;
     frameData = _aseDocument->frames[_frame];
     UpdateRect();
+    return progressed;
   }
 }
 
