@@ -6,7 +6,8 @@ cmake_minimum_required(VERSION 3.22)
 message(STATUS "Starting ${LIBRARY_TARGET_NAME} library initialization")
 set(SRC_FILES
     src/Game.cpp
-    src/Lua.c
+
+    # src/Lua.c
     src/Video.cpp
     src/Sound.cpp
     src/Coroutine.c
