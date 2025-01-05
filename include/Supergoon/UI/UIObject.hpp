@@ -38,6 +38,7 @@ public:
   void SetLayer(unsigned int layer);
   sgVector2 *DrawOverrideHandle();
   float *DrawOverrideXHandle();
+  float *DrawOverrideYHandle();
   int *AlphaHandle();
   int EffectiveAlpha();
   bool Visible();

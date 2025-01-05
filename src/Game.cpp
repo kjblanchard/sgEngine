@@ -16,7 +16,7 @@
 #include <Supergoon/Game.hpp>
 #include <Supergoon/Graphics/Graphics.hpp>
 #include <Supergoon/Log.hpp>
-#include <Supergoon/Lua.h>
+// #include <Supergoon/Lua.h>
 #include <Supergoon/Sound.hpp>
 #include <Supergoon/UI/UI.hpp>
 #include <Supergoon/pch.hpp>
@@ -36,7 +36,7 @@ SDL_AppResult SDL_AppInit(void **appState, int, char *[]) {
 #endif
   geInitializeKeyboard();
   geInitializeJoysticks();
-  sgInitializeLua();
+  // sgInitializeLua();
 
   auto game = sgRegisterGame();
   *appState = game;

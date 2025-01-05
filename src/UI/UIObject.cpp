@@ -39,6 +39,9 @@ sgVector2 *UIObject::DrawOverrideHandle() {
 float *UIObject::DrawOverrideXHandle() {
   return &_drawOverride.X;
 }
+float *UIObject::DrawOverrideYHandle() {
+  return &_drawOverride.Y;
+}
 
 void UIObject::RemoveChild(const std::string &name) {
   Children.erase(std::remove_if(Children.begin(), Children.end(),
