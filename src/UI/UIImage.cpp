@@ -11,7 +11,7 @@ UIImage::UIImage(UIObject *parent, std::string id) : UIObject(parent, id) {
   WidgetType = (int)BuiltinWidgetTypes::Image;
 }
 
-UIImage::UIImage(UIObject *parent, json &imageJson) : UIObject(parent) {
+UIImage::UIImage(UIObject *parent, json &imageJson) : UIObject(parent, imageJson["name"].get<std::string>()) {
   WidgetType = (int)BuiltinWidgetTypes::Image;
   _visible = imageJson["visible"].get<bool>();
   _alpha = imageJson["alpha"].get<float>();
@@ -19,6 +19,7 @@ UIImage::UIImage(UIObject *parent, json &imageJson) : UIObject(parent) {
   auto sourceData = imageJson["source"];
   auto destinationData = imageJson["destination"];
   auto imageName = sourceData["name"].get<std::string>();
+  Name = name;
   auto fullPath = std::string(SDL_GetBasePath()) + "assets/img/" + imageName + ".png";
   ImagePtr = ContentRegistry::CreateContent<Image>(fullPath);
   Offset.X = destinationData["x"].get<float>();

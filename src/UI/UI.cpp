@@ -68,8 +68,9 @@ void UI::LoadUIFromFile(std::string filename, Panel* parentPanel) {
 	auto j = json::parse(fileStream);
 	for (auto& jsonChild : j) {
 		if (jsonChild["type"] == "Image") {
-			auto name = jsonChild["name"].get<std::string>();
-			auto child = std::make_shared<UIImage>(parentPanel, jsonChild);
+			// auto name = jsonChild["name"].get<std::string>();
+			// auto child = std::make_shared<UIImage>(parentPanel, jsonChild);
+			auto child = new UIImage(parentPanel, jsonChild);
 		}
 	}
 }
