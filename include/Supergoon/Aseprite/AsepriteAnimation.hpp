@@ -11,7 +11,7 @@ public:
   std::string Filename();
   void Load();
   // TODO Updates an anim, and returns if it progressed a frame for the UI, but its not even used.. so it can prolly turn to void
-  bool UpdateAnimation(double d);
+  void UpdateAnimation(double d);
   std::function<void(AsepriteAnimation *anim, std::string)> OnAnimationEnd = nullptr;
 
   void PlayAnimation(std::string a);

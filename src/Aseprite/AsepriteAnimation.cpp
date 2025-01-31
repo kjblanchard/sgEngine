@@ -22,9 +22,10 @@ void AsepriteAnimation::Load() {
   UpdateRect();
 }
 
-bool AsepriteAnimation::UpdateAnimation(double d) {
+void AsepriteAnimation::UpdateAnimation(double d) {
   if (_repeats == 0) {
-    return false;
+    // return false;
+    return;
   }
   auto justFinished = false;
   _frameTime += d;
@@ -81,12 +82,13 @@ bool AsepriteAnimation::UpdateAnimation(double d) {
     }
     // We should only update the rect, if we have any repeats left.
     if (_repeats == 0) {
-      return false;
+      // return false;
+      return;
     }
     _frame = _nextFrame;
     frameData = _aseDocument->frames[_frame];
     UpdateRect();
-    return progressed;
+    // return progressed;
   }
 }
 
