@@ -118,7 +118,9 @@ void Game::InternalUpdate() {
 #endif
   sgUpdateCoroutines(DeltaTime());
   Update();
+#ifndef __EMSCRIPTEN__
   t1.join();
+#endif
 }
 
 void Game::InternalDraw() {

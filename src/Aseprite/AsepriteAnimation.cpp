@@ -88,6 +88,7 @@ void AsepriteAnimation::UpdateAnimation(double d) {
     _frame = _nextFrame;
     frameData = _aseDocument->frames[_frame];
     UpdateRect();
+    sgLogDebug("Animation progressed = %d ", progressed);
     // return progressed;
   }
 }
