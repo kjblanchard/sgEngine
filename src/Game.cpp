@@ -20,8 +20,10 @@
 #include <Supergoon/Sound.hpp>
 #include <Supergoon/UI/UI.hpp>
 #include <Supergoon/pch.hpp>
+#include <thread>
 
 using json = nlohmann::json;
+using namespace std;
 using namespace Supergoon;
 json configData;
 
@@ -103,12 +105,20 @@ void Game::InitializeImGui() {
   io.IniFilename = thing.c_str();
 #endif
 }
+static void threadSound(Sound *sound) {
+  sound->Update();
+}
 
 void Game::InternalUpdate() {
   geClockUpdate(&_clock);
+#ifndef __EMSCRIPTEN__
+  std::thread t1(threadSound, _sound.get());
+#else
   _sound->Update();
+#endif
   sgUpdateCoroutines(DeltaTime());
   Update();
+  t1.join();
 }
 
 void Game::InternalDraw() {

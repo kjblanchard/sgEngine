@@ -41,10 +41,11 @@ public:
   void PlaySfx(Sfx *sfx, float volume = 1.0);
   void PlaySfxOneShot(const char *name, float volume = 1.0);
   static inline Sound *Instance() { return _instance; }
+  //  Updates all internal bgms
+  // making public for now to test threading.
+  void Update();
 
 private:
-  //  Updates all internal bgms
-  void Update();
   void CheckForStaleSfxStreams();
   void UpdatePlayingBgmVolume(int slot = 0);
   const size_t _totalSfxStreams = 4;
