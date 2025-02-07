@@ -29,6 +29,7 @@ void Text::Draw(RectangleF &src, RectangleF &dst) {
 
 void Text::MeasureText() {
   auto fontFace = _font->FontFace();
+  assert(fontFace && "no font loaded for text to load");
   int maxWidth = _textBounds.X ? _textBounds.X : INT_MAX;
   int maxHeight = _textBounds.Y ? _textBounds.Y : INT_MAX;
   maxWidth -= _paddingR;

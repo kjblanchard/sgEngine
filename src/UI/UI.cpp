@@ -4,19 +4,44 @@
 #include <Supergoon/UI/Panel.hpp>
 #include <Supergoon/UI/UI.hpp>
 #include <Supergoon/UI/UIImage.hpp>
-#include <Supergoon/pch.hpp>
+#include <Supergoon/UI/UIText.hpp>
 using namespace Supergoon;
+using namespace std;
 using json = nlohmann::json;
 std::unique_ptr<Panel> UI::UIInstance = nullptr;
 UIObjectAnimatorBase *UI::_fadeInAnimator = nullptr;
 UIObjectAnimatorBase *UI::_fadeOutAnimator = nullptr;
-// std::vector<std::shared_ptr<UIObjectAnimatorBase>> UI::Animators;
+static void handleScreenTransitionDisplay(Level *level) {
+  auto display = level->GetCurrentLevelProperty<string>("display");
+  auto textPanel = dynamic_cast<Panel *>(UI::UIInstance->GetChildByName("screen"));
+  assert(textPanel);
+  if (display) {
+    auto textBox = (UIText *)textPanel->GetChildByName("textmanscreen");
+    assert(textBox);
+    textPanel->SetVisible(true);
+    textPanel->SetAlpha(255);
+    textBox->UpdateText(*display);
+    // TODO this should be different.
+    for (auto &&animator : textPanel->Animators) {
+      animator->Restart();
+      animator->Play();
+    }
+  } else {
+    textPanel->SetVisible(false);
+  }
+}
+
 void UI::RegisterUIEvents() {
   Events::RegisterEventHandler(Events::BuiltinEvents.UiDestroyObject, [](int, void *name, void *) {
     auto ui = UI::UIInstance.get();
     auto nameString = (const char *)name;
     assert(nameString);
     ui->RemoveChild(nameString);
+  });
+  Events::RegisterEventHandler(Events::BuiltinEvents.LevelLoadedEvent, [](int, void *loadedLevel, void *) {
+    assert(loadedLevel && (Level *)loadedLevel && "failed changing level!");
+    auto level = (Level *)loadedLevel;
+    handleScreenTransitionDisplay(level);
   });
 }
 

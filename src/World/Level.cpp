@@ -171,9 +171,7 @@ void Level::LoadNewLevel(std::string level) {
   if (!bgm.empty()) {
     Events::PushEvent(Events::BuiltinEvents.PlayBgmEvent, 0, (void *)strdup(bgm.c_str()));
   }
-  // if (comp.InBattle) {
-  //   UI::FadeIn();
-  // }
+  Events::PushEvent(Events::BuiltinEvents.LevelLoadedEvent, true, (void *)Level::_currentLevel.get());
 }
 
 void Level::LoadAllGameObjects() {

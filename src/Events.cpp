@@ -17,6 +17,7 @@ BuiltinEventTypes Events::BuiltinEvents;
 Events::Events(Game *game) {
   BuiltinEvents.ImGuiFocusedEvent = RegisterEvent();
   BuiltinEvents.LevelChangeEvent = RegisterEvent();
+  BuiltinEvents.LevelLoadedEvent = RegisterEvent();
   BuiltinEvents.ResetGameEvent = RegisterEvent();
   BuiltinEvents.PlayBgmEvent = RegisterEvent();
   BuiltinEvents.StopBgmEvent = RegisterEvent();

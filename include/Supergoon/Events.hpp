@@ -10,6 +10,7 @@ using EventFunc = std::function<void(int, void *, void *)>;
 struct BuiltinEventTypes {
   uint32_t ImGuiFocusedEvent;
   uint32_t LevelChangeEvent;
+  uint32_t LevelLoadedEvent;
   uint32_t ResetGameEvent;
   uint32_t PlayBgmEvent;
   uint32_t StopBgmEvent;
