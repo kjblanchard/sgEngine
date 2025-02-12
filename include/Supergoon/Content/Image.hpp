@@ -28,6 +28,7 @@ public:
   inline int Width() { return _width; }
   inline int Height() { return _height; }
   void Clear(sgColor color = {0, 0, 0, 255});
+  inline sgColor *GetColorHandle() { return &_imageColor; }
   // Updates the color modifier on this texture.
   void SetImageColor(sgColor colorToUse);
   void DrawImageToImage(Image &src, RectangleF &srcRect, RectangleF &dstRect);
