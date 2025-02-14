@@ -5,6 +5,7 @@
 #include <Supergoon/Game.hpp>
 #include <Supergoon/UI/UI.hpp>
 #include <Supergoon/World/Level.hpp>
+#include <SupergoonEngine/input/joystick.h>
 #include <algorithm>
 #ifdef imgui
 #include <SupergoonEngine/imgui/imgui_impl_sdl3.h>
@@ -52,7 +53,7 @@ bool Events::HandleEvent(SDL_Event *event) {
   if (event->type == SDL_EVENT_QUIT) {
     return SDL_APP_SUCCESS;
   }
-  // 	geUpdateKeyboard();
+  geHandleJoystickEvent(event);
   HandleCustomEventHandlers(event);
   return SDL_APP_CONTINUE;
 }
